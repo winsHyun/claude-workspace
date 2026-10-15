@@ -53,3 +53,13 @@
 - [x] 4. 브랜치에 커밋
 - [x] 5. `main`으로 돌아와 머지(merge, 브랜치 작업을 main에 합치기)
 - [x] 6. GitHub에 push → 올라간 내용 확인 → `progress.md` 기록
+
+## 2026-10-15 — 포트폴리오 Vercel 배포 준비 (배포 자체는 사용자가 직접)
+
+- [x] 1. `portfolio/` 폴더를 배포 전용 폴더로 만들기 — `portfolio.html` → `portfolio/index.html` 로 복사
+  - 이유: 레포 최상위를 배포하면 `SECURITY.md`, `work.txt`, `docs/` 등이 공개됨 → 포트폴리오 폴더만 배포
+- [x] 2. 최상위 `portfolio.html` 은 `portfolio.html.bak` 으로 백업(이름 변경)해서 중복 정리
+- [x] 3. `portfolio/vercel.json` 추가 — 깔끔한 주소(cleanUrls) + 기본 보안 헤더
+- [x] 4. 로컬에서 실제로 띄워서 페이지가 잘 나오는지 확인
+- [x] 5. 커밋 (`resume.html` 삭제 포함) → GitHub에 push
+- [ ] 6. Vercel 설정 방법 안내 (Root Directory = `portfolio`) → `progress.md` 기록

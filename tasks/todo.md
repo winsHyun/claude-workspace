@@ -47,9 +47,9 @@
 
 ## 2026-10-15 — 포트폴리오 다크모드 (브랜치 작업)
 
-- [ ] 1. `feature/dark-mode` 브랜치 만들기
-- [ ] 2. `portfolio/index.html`, `portfolio/resume.html` 다크모드 적용 (방식은 사용자 선택)
-- [ ] 3. 브라우저로 열어서 실제로 어두워지는지 확인 (스크린샷)
-- [ ] 4. 브랜치에 커밋
-- [ ] 5. `main`으로 돌아와 머지(merge, 브랜치 작업을 main에 합치기)
-- [ ] 6. GitHub에 push → 올라간 내용 확인 → `progress.md` 기록
+- [x] 1. `feature/dark-mode` 브랜치 만들기
+- [x] 2. `portfolio/index.html`, `portfolio/resume.html` 다크모드 적용 (방식은 사용자 선택)
+- [x] 3. 브라우저로 열어서 실제로 어두워지는지 확인 (스크린샷)
+- [x] 4. 브랜치에 커밋
+- [x] 5. `main`으로 돌아와 머지(merge, 브랜치 작업을 main에 합치기)
+- [x] 6. GitHub에 push → 올라간 내용 확인 → `progress.md` 기록

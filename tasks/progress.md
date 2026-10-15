@@ -27,3 +27,10 @@
 - `README.md` 폴더 구조 업데이트 (백업: `README.md.bak`)
 - 작업 도중 사용자가 필요 없는 파일 8개(pdf, pptx, 이미지)를 직접 삭제 → 남은 15개 파일로 진행
 - 첫 커밋 `addc007 Initial setup` → https://github.com/winsHyun/claude-workspace (PRIVATE 확인, `.env` 미포함 확인)
+
+## 2026-10-15 — 포트폴리오 다크모드
+
+- `feature/dark-mode` 브랜치에서 `portfolio/index.html`, `resume.html`을 항상 다크로 변경 (밝은 색 설정 삭제, `color-scheme: dark` 추가)
+- Edge 헤드리스로 밝은 모드 설정에서 열어 스크린샷 → 두 페이지 모두 어두운 배경 확인
+- main에 머지(fast-forward) 후 push: `896cafe Make portfolio always dark mode` → GitHub 내용 확인
+- `work.txt`는 사용자가 수정 중이라 커밋하지 않음

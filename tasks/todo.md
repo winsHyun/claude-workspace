@@ -1,4 +1,4 @@
-# 📋 TODO
+﻿# 📋 TODO
 
 > 오늘 할 일 체크리스트. 작업 시작 시 확인하고, 끝나면 체크(`[x]`)합니다.
 
@@ -38,9 +38,18 @@
 ## 2026-10-15 — GitHub 업로드 (private 레포)
 
 - [x] 0. gh 설치 확인 → 이미 설치됨 (v2.102.0, winsHyun 로그인 완료) → 설치 생략
-- [ ] 1. `.gitignore` 생성 — `.env`, `*.key`, `*.pem`, `id_rsa*`, `credentials*`, `*.bak`, 100MB 넘는 PDF + (사용자가 고른) 개인 파일
-- [ ] 2. `README.md` 폴더 구조 정리 (기존 파일 → `README.md.bak` 백업 후 수정)
-- [ ] 3. `git init` → `git add` → 실제로 올라갈 파일 목록을 보여주고 민감 파일 없는지 확인
-- [ ] 4. 첫 커밋 "Initial setup"
-- [ ] 5. `gh repo create claude-workspace --private` 로 만들고 push
-- [ ] 6. GitHub에서 private인지, 파일이 맞는지 확인 → `progress.md` 기록
+- [x] 1. `.gitignore` 생성 — `.env`, `*.key`, `*.pem`, `id_rsa*`, `credentials*`, `*.bak`, 100MB 넘는 PDF + (사용자가 고른) 개인 파일
+- [x] 2. `README.md` 폴더 구조 정리 (기존 파일 → `README.md.bak` 백업 후 수정)
+- [x] 3. `git init` → `git add` → 실제로 올라갈 파일 목록을 보여주고 민감 파일 없는지 확인
+- [x] 4. 첫 커밋 "Initial setup"
+- [x] 5. `gh repo create claude-workspace --private` 로 만들고 push
+- [x] 6. GitHub에서 private인지, 파일이 맞는지 확인 → `progress.md` 기록
+
+## 2026-10-15 — 포트폴리오 다크모드 (브랜치 작업)
+
+- [ ] 1. `feature/dark-mode` 브랜치 만들기
+- [ ] 2. `portfolio/index.html`, `portfolio/resume.html` 다크모드 적용 (방식은 사용자 선택)
+- [ ] 3. 브라우저로 열어서 실제로 어두워지는지 확인 (스크린샷)
+- [ ] 4. 브랜치에 커밋
+- [ ] 5. `main`으로 돌아와 머지(merge, 브랜치 작업을 main에 합치기)
+- [ ] 6. GitHub에 push → 올라간 내용 확인 → `progress.md` 기록

@@ -19,3 +19,11 @@
   - 직접 실행 2회 확인 (정상 저장, 덮어쓰기 동작 확인). 작업 스케줄러 등록은 사용자 요청으로 하지 않음
 - `portfolio/index.html` 작성 — 포트폴리오 웹페이지 (소개·경력 3개(예시)·연락처(가짜 주소), 반응형·다크모드). 데스크톱·모바일(390px) 화면 캡처로 확인 후 브라우저에서 열기
 - `portfolio/resume.html` 작성 — resume.pdf 기준 포트폴리오 (김수민, 경력 2 + 대표 프로젝트 1, 핵심 성과·스킬·연락처). 기존 index.html은 유지. 데스크톱·모바일(390px) 캡처 확인 후 브라우저에서 열기
+
+## 2026-10-15 — GitHub 업로드
+
+- gh는 이미 설치되어 있었음 (v2.102.0, winsHyun 로그인 상태) → 설치 생략
+- `.gitignore` 생성: `.env`, `*.key`, `*.pem`, `id_rsa*`, `*credentials*`, `*.bak`, OS 임시 파일 제외
+- `README.md` 폴더 구조 업데이트 (백업: `README.md.bak`)
+- 작업 도중 사용자가 필요 없는 파일 8개(pdf, pptx, 이미지)를 직접 삭제 → 남은 15개 파일로 진행
+- 첫 커밋 `addc007 Initial setup` → https://github.com/winsHyun/claude-workspace (PRIVATE 확인, `.env` 미포함 확인)

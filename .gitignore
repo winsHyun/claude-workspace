@@ -1,0 +1,23 @@
+# ===== 🔒 민감 파일 (절대 올리지 않음) =====
+.env
+.env.*
+*.key
+*.pem
+id_rsa*
+*credentials*
+*.p12
+*.pfx
+
+# ===== 백업 파일 =====
+*.bak
+
+# ===== OS·에디터 임시 파일 =====
+Thumbs.db
+desktop.ini
+.DS_Store
+.vscode/
+.idea/
+~$*
+
+# ===== Claude Code 개인 설정 =====
+.claude/settings.local.json

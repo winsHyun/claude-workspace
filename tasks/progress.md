@@ -34,3 +34,21 @@
 - Edge 헤드리스로 밝은 모드 설정에서 열어 스크린샷 → 두 페이지 모두 어두운 배경 확인
 - main에 머지(fast-forward) 후 push: `896cafe Make portfolio always dark mode` → GitHub 내용 확인
 - `work.txt`는 사용자가 수정 중이라 커밋하지 않음
+
+## 2026-10-15 — 포트폴리오 Vercel 배포 준비
+
+- 작업 폴더에서 `portfolio/` 폴더가 지워지고 최상위에 `portfolio.html` 이 생겨 있었음 → 사용자 선택: `portfolio.html` 기준으로 유지
+- `portfolio/index.html` (← `portfolio.html`, 내용 동일) + `portfolio/vercel.json` (cleanUrls, 보안 헤더) 구성
+- 최상위 `portfolio.html` → `portfolio.html.bak` 백업, `resume.html` 삭제 반영 (git 기록에서 복구 가능)
+- 로컬 서버(`npx serve`)로 확인: HTTP 200, 제목 "Hyunjo · Portfolio" 정상
+- 커밋 `3f84c59` → GitHub push 완료
+- 남은 일(사용자): Vercel에서 Import 후 **Root Directory = `portfolio`** 로 지정해 배포
+
+## 2026-10-15 — 포트폴리오 배포 구조 변경 (최상위 기준)
+
+- 사용자가 `portfolio/` 폴더를 지우고 `portfolio.html`, `vercel.json` 을 최상위로 옮김 → 이 구조로 배포 준비
+- 최상위 배포 시 SECURITY.md 등이 공개되는 문제 → `.vercelignore` 허용 목록(`/*`, `!portfolio.html`, `!vercel.json`) 추가
+- `vercel.json` 에 `/` → `/portfolio.html` rewrite 추가
+- 확인: 임시 git 저장소로 규칙 검사 → 올라가는 파일은 `portfolio.html`, `vercel.json` 2개, 14개 제외
+- 확인: 허용 파일만 담아 로컬 서버 실행 → `/` 200(포트폴리오), `/SECURITY.md`·`/work.txt` 404
+- 남은 일(사용자): Vercel Import 시 Root Directory 비워두기, 배포 후 `/SECURITY.md` 404 직접 확인

@@ -1,0 +1,4 @@
+# Vercel에 올릴 파일만 허용 (나머지는 전부 제외 → SECURITY.md 등 공개 방지)
+/*
+!portfolio.html
+!vercel.json

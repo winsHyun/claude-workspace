@@ -52,3 +52,12 @@
 - 확인: 임시 git 저장소로 규칙 검사 → 올라가는 파일은 `portfolio.html`, `vercel.json` 2개, 14개 제외
 - 확인: 허용 파일만 담아 로컬 서버 실행 → `/` 200(포트폴리오), `/SECURITY.md`·`/work.txt` 404
 - 남은 일(사용자): Vercel Import 시 Root Directory 비워두기, 배포 후 `/SECURITY.md` 404 직접 확인
+
+## 2026-10-18 — portfolio.html 현행화
+
+- `이력서_20261018.doc`(Word가 HTML로 저장한 파일)에서 내용을 뽑아 `portfolio.html`을 새로 작성 (백업: `portfolio.html.bak`)
+- 구성: 소개 + 터미널 타이핑 카드, 숫자 카운트업(경력·프로젝트 28건·발주기관 7곳), 기술 스택 6분류, 2007→현재 연도 막대 + 기술 필터 + 경력 타임라인 14건, 자격증, 연락처
+- 아이콘: GitHub Octicons(@primer/octicons 19.15.0) 20개를 SVG로 페이지 안에 넣음 → 외부 요청 없이 표시
+- 공개 페이지라 휴대폰 번호·나이·병역·희망연봉은 제외 (사용자 선택: 이메일·GitHub만), 운전면허는 직무와 무관해 제외
+- 확인: Edge 헤드리스로 1280px·390px 화면 스크린샷 → 레이아웃·필터 개수·재직 기간 자동 계산(3년 9개월) 정상
+- `README.md` 폴더 구조 갱신 (백업: `README.md.bak`), `.gitignore`의 `*이력서*` 규칙으로 이력서 미포함 확인

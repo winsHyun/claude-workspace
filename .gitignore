@@ -7,7 +7,7 @@ id_rsa*
 *credentials*
 *.p12
 *.pfx
-
+*이력서*
 # ===== 백업 파일 =====
 *.bak
 

@@ -71,3 +71,17 @@
 - [x] 3. 로컬 테스트 (`/` 접속 시 포트폴리오 표시)
 - [x] 4. 커밋 + push (`work.txt` 제외)
 - [x] 5. Vercel 안내 수정 (Root Directory 비워두기, 배포 후 `/SECURITY.md` 404 확인) → `progress.md` 기록
+
+## 2026-10-18 — portfolio.html 현행화 (이력서_20261018.doc 기준)
+
+- [x] 1. 이력서가 Git에 안 올라가는지 확인 — `.gitignore`의 `*이력서*` 규칙으로 `.doc`, `.files/` 모두 제외됨 (확인 완료)
+- [x] 2. 기존 `portfolio.html` → `portfolio.html.bak` 백업
+- [x] 3. `portfolio.html` 새로 작성
+  - 다크모드 유지, 깔끔한 디자인 + Octicons(GitHub 아이콘)
+  - 소개 / 핵심 숫자(경력 18년 10개월 등) / 기술 스택 / 경력 타임라인(2007→현재) / 자격증 / 연락처
+  - 다이나믹 요소: 스크롤 등장 애니메이션, 숫자 카운트업, 타임라인 진행선, 기술 필터
+  - 공개 페이지라 민감정보(휴대폰, 나이, 병역, 희망연봉)는 제외 (사용자 확인)
+- [x] 4. 브라우저(Edge 헤드리스)로 열어 PC·모바일 화면 스크린샷 확인
+- [x] 5. `README.md` 폴더 구조 다시 정리 (백업: `README.md.bak`)
+- [x] 6. 커밋 "portfolio.html현행화" (이력서 파일 미포함 확인, push는 따로 확인)
+- [x] 7. `progress.md` 기록

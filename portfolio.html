@@ -3,33 +3,51 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Hyunjo · Portfolio</title>
-<meta name="description" content="개발자 Hyunjo의 포트폴리오">
+<title>조현 · Portfolio</title>
+<meta name="description" content="공공 SI 18년차 웹 개발자 조현의 포트폴리오 — Java, Spring, 전자정부표준프레임워크, MyBatis">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
 <style>
   /* 항상 다크모드 */
   :root {
     color-scheme: dark;
     --bg: #0c0a09;
     --surface: #1c1917;
+    --surface-2: #231f1d;
     --text: #f5f5f4;
     --muted: #a8a29e;
+    --faint: #78716c;
     --line: #292524;
     --accent: #2dd4bf;
     --accent-soft: #134e4a;
-    --shadow: none;
+    --amber: #fbbf24;
+    --amber-soft: #422006;
+    --mono: ui-monospace, "SFMono-Regular", Consolas, "D2Coding", monospace;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
+  html { scroll-behavior: smooth; scroll-padding-top: 72px; }
   body {
     background: var(--bg);
     color: var(--text);
     font-family: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
     line-height: 1.7;
     word-break: keep-all;
+    overflow-x: hidden;
   }
   a { color: inherit; }
-  .wrap { max-width: 880px; margin: 0 auto; padding: 0 24px; }
+  .wrap { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+
+  /* 옥티콘 */
+  .oc { width: 16px; height: 16px; fill: currentColor; flex: none; vertical-align: -3px; }
+  .oc.lg { width: 24px; height: 24px; vertical-align: -6px; }
+
+  /* 스크롤 진행 바 */
+  #progress {
+    position: fixed; top: 0; left: 0; height: 3px; width: 100%; z-index: 20;
+    background: linear-gradient(90deg, var(--accent), var(--amber));
+    transform-origin: 0 50%; transform: scaleX(0);
+  }
 
   /* 상단 내비게이션 */
   nav {
@@ -38,77 +56,224 @@
     backdrop-filter: blur(8px);
     border-bottom: 1px solid var(--line);
   }
-  nav .wrap { display: flex; justify-content: space-between; align-items: center; height: 60px; }
-  nav .logo { font-weight: 800; letter-spacing: -.02em; text-decoration: none; }
-  nav ul { display: flex; gap: 24px; list-style: none; }
-  nav ul a { text-decoration: none; color: var(--muted); font-size: .95rem; }
-  nav ul a:hover { color: var(--accent); }
+  nav .wrap { display: flex; justify-content: space-between; align-items: center; height: 60px; gap: 16px; }
+  nav .logo { display: flex; align-items: center; gap: 8px; font-weight: 800; letter-spacing: -.02em; text-decoration: none; }
+  nav .logo .oc { color: var(--accent); }
+  nav ul { display: flex; gap: 22px; list-style: none; }
+  nav ul a { text-decoration: none; color: var(--muted); font-size: .95rem; transition: color .15s; }
+  nav ul a:hover, nav ul a.on { color: var(--accent); }
 
   /* 소개 */
-  .hero { padding: 96px 0 72px; }
+  .hero { padding: 88px 0 72px; position: relative; }
+  .hero::before {
+    content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+    background:
+      radial-gradient(600px 300px at 15% 10%, color-mix(in srgb, var(--accent) 12%, transparent), transparent 70%),
+      radial-gradient(500px 260px at 90% 60%, color-mix(in srgb, var(--amber) 7%, transparent), transparent 70%);
+  }
+  .hero .intro { display: grid; grid-template-columns: 1.1fr .9fr; gap: 40px; align-items: center; }
   .badge {
-    display: inline-block; padding: 4px 12px; border-radius: 999px;
+    display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 999px;
     background: var(--accent-soft); color: var(--accent);
     font-size: .85rem; font-weight: 600; margin-bottom: 20px;
   }
-  .hero h1 { font-size: clamp(2.2rem, 6vw, 3.4rem); line-height: 1.2; letter-spacing: -.03em; }
+  .badge .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 60%, transparent); } 50% { box-shadow: 0 0 0 6px transparent; } }
+  .hero h1 { font-size: clamp(2.1rem, 5.4vw, 3.2rem); line-height: 1.22; letter-spacing: -.03em; }
   .hero h1 span { color: var(--accent); }
-  .hero p { margin-top: 20px; max-width: 600px; color: var(--muted); font-size: 1.1rem; }
+  .hero p { margin-top: 20px; color: var(--muted); font-size: 1.05rem; }
   .btns { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 32px; }
   .btn {
-    padding: 12px 22px; border-radius: 10px; text-decoration: none; font-weight: 600;
-    border: 1px solid var(--line); transition: transform .15s;
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 12px 20px; border-radius: 10px; text-decoration: none; font-weight: 600;
+    border: 1px solid var(--line); background: var(--surface); transition: transform .15s, border-color .15s;
   }
-  .btn:hover { transform: translateY(-2px); }
+  .btn:hover { transform: translateY(-2px); border-color: var(--accent); }
   .btn.primary { background: var(--accent); border-color: var(--accent); color: var(--bg); }
 
-  section { padding: 64px 0; border-top: 1px solid var(--line); }
-  h2 { font-size: 1.6rem; letter-spacing: -.02em; margin-bottom: 32px; }
-  h2::before { content: ""; display: inline-block; width: 6px; height: 1.1em; background: var(--accent); border-radius: 3px; margin-right: 12px; vertical-align: -3px; }
-
-  /* 경력 */
-  .timeline { display: grid; gap: 16px; }
-  .job {
-    background: var(--surface); border: 1px solid var(--line); border-radius: 14px;
-    padding: 24px 28px; box-shadow: var(--shadow);
-    display: grid; grid-template-columns: 170px 1fr; gap: 20px;
+  /* 터미널 카드 */
+  .term {
+    background: #0f0d0c; border: 1px solid var(--line); border-radius: 14px; overflow: hidden;
+    box-shadow: 0 24px 60px -20px rgba(0,0,0,.7);
+    font-family: var(--mono); font-size: .84rem; line-height: 1.65;
   }
-  .job .period { color: var(--muted); font-size: .9rem; font-variant-numeric: tabular-nums; }
-  .job h3 { font-size: 1.15rem; }
-  .job .role { color: var(--accent); font-weight: 600; font-size: .95rem; margin-bottom: 8px; }
-  .job ul { padding-left: 18px; color: var(--muted); }
-  .tag { font-size: .7rem; color: var(--muted); border: 1px solid var(--line); border-radius: 4px; padding: 1px 6px; margin-left: 6px; vertical-align: 2px; font-weight: 400; }
+  .term-bar { display: flex; align-items: center; gap: 6px; padding: 10px 14px; border-bottom: 1px solid var(--line); color: var(--faint); font-size: .78rem; }
+  .term-bar i { width: 10px; height: 10px; border-radius: 50%; background: #44403c; }
+  .term-bar span { margin-left: 8px; }
+  .term pre { padding: 16px 18px; min-height: 252px; white-space: pre-wrap; word-break: break-all; color: var(--muted); }
+  .term .k { color: var(--accent); }
+  .term .s { color: #fde68a; }
+  .term .p { color: var(--faint); }
+  .caret { display: inline-block; width: 8px; height: 1.1em; background: var(--accent); vertical-align: -3px; animation: blink 1s steps(1) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  /* 숫자 */
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 56px; }
+  .stat {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 20px;
+  }
+  .stat .oc { color: var(--accent); }
+  .stat .num { font-size: 2rem; font-weight: 800; letter-spacing: -.03em; margin-top: 6px; font-variant-numeric: tabular-nums; }
+  .stat .num small { font-size: 1rem; font-weight: 600; color: var(--muted); margin-left: 2px; }
+  .stat .label { color: var(--muted); font-size: .88rem; }
+
+  section { padding: 72px 0; border-top: 1px solid var(--line); }
+  h2 { display: flex; align-items: center; gap: 12px; font-size: 1.6rem; letter-spacing: -.02em; margin-bottom: 12px; }
+  h2 .oc { color: var(--accent); }
+  .lead { color: var(--muted); margin-bottom: 32px; }
+
+  /* 기술 스택 */
+  .skills { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .skill {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 22px;
+    transition: border-color .2s, transform .2s;
+  }
+  .skill:hover { border-color: var(--accent); transform: translateY(-3px); }
+  .skill h3 { display: flex; align-items: center; gap: 8px; font-size: 1rem; margin-bottom: 14px; }
+  .skill h3 .oc { color: var(--accent); }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip {
+    font-size: .78rem; padding: 2px 10px; border-radius: 999px;
+    border: 1px solid var(--line); color: var(--muted); background: var(--surface-2);
+  }
+  .skill .chip { font-size: .85rem; padding: 4px 12px; color: var(--text); }
+
+  /* 경력: 연도 흐름 막대 */
+  .gantt { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 20px 20px 14px; margin-bottom: 20px; }
+  .gantt-track { position: relative; height: 34px; border-radius: 8px; background: var(--surface-2); }
+  .seg {
+    position: absolute; top: 6px; bottom: 6px; border-radius: 5px; border: 0; padding: 0; cursor: pointer;
+    background: var(--accent); opacity: .85; transition: opacity .2s, transform .2s;
+    transform: scaleX(0); transform-origin: 0 50%;
+  }
+  .seg.staff { background: var(--amber); }
+  .gantt.in .seg { transform: scaleX(1); transition: transform .8s cubic-bezier(.2,.7,.2,1), opacity .2s; }
+  .seg:hover, .seg:focus-visible { opacity: 1; outline: 2px solid var(--text); outline-offset: 1px; }
+  .seg.dim { opacity: .15; }
+  .gantt-axis { position: relative; height: 22px; margin-top: 6px; font-size: .75rem; color: var(--faint); font-variant-numeric: tabular-nums; }
+  .gantt-axis span { position: absolute; transform: translateX(-50%); }
+  .gantt-foot { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-top: 6px; font-size: .82rem; color: var(--muted); }
+  .legend { display: flex; gap: 16px; }
+  .legend i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; background: var(--accent); margin-right: 6px; vertical-align: -1px; }
+  .legend .staff i { background: var(--amber); }
+  #tip { min-height: 1.4em; color: var(--text); }
+
+  /* 경력: 필터 */
+  .filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 32px; }
+  .filter {
+    font: inherit; font-size: .85rem; cursor: pointer;
+    padding: 6px 14px; border-radius: 999px; border: 1px solid var(--line);
+    background: transparent; color: var(--muted); transition: all .15s;
+  }
+  .filter:hover { color: var(--text); border-color: var(--faint); }
+  .filter.on { background: var(--accent); border-color: var(--accent); color: var(--bg); font-weight: 600; }
+  .filter b { font-weight: 400; opacity: .7; margin-left: 4px; }
+
+  /* 경력: 타임라인 */
+  .timeline { position: relative; display: grid; gap: 20px; }
+  .timeline::before, .tl-fill {
+    content: ""; position: absolute; left: 87px; top: 8px; bottom: 8px; width: 2px; background: var(--line);
+  }
+  .tl-fill { background: linear-gradient(var(--accent), var(--amber)); transform-origin: 0 0; transform: scaleY(0); }
+  .tl-item { position: relative; display: grid; grid-template-columns: 70px 1fr; gap: 36px; }
+  .tl-item[hidden] { display: none; }
+  .tl-year { text-align: right; font-weight: 800; font-size: 1.05rem; color: var(--faint); padding-top: 18px; font-variant-numeric: tabular-nums; transition: color .3s; }
+  .tl-item.seen .tl-year { color: var(--text); }
+  .tl-dot {
+    position: absolute; left: 81px; top: 25px; width: 14px; height: 14px; border-radius: 50%;
+    background: var(--bg); border: 2px solid var(--faint); transition: all .3s;
+  }
+  .tl-item.seen .tl-dot { border-color: var(--accent); background: var(--accent); box-shadow: 0 0 0 5px color-mix(in srgb, var(--accent) 20%, transparent); }
+  .tl-item.staff.seen .tl-dot { border-color: var(--amber); background: var(--amber); box-shadow: 0 0 0 5px color-mix(in srgb, var(--amber) 20%, transparent); }
+  .tl-item.now .tl-dot { animation: pulse 2s infinite; }
+  .tl-card {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 22px 26px;
+    transition: border-color .2s;
+  }
+  .tl-card:hover, .tl-item.flash .tl-card { border-color: var(--accent); }
+  .tl-head { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 4px 12px; color: var(--muted); font-size: .88rem; font-variant-numeric: tabular-nums; }
+  .tl-head .period { display: inline-flex; align-items: center; gap: 6px; }
+  .dur { font-size: .8rem; color: var(--faint); }
+  .tl-card h3 { font-size: 1.2rem; margin-top: 6px; display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+  .pill { font-size: .72rem; font-weight: 600; padding: 2px 9px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); }
+  .staff .pill { background: var(--amber-soft); color: var(--amber); }
+  .pill.live { background: var(--accent); color: var(--bg); }
+  .meta { display: flex; flex-wrap: wrap; gap: 4px 18px; margin: 6px 0 14px; font-size: .9rem; color: var(--muted); }
+  .meta span { display: inline-flex; align-items: center; gap: 6px; }
+  .projects { list-style: none; display: grid; gap: 12px; }
+  .projects li { padding-left: 16px; border-left: 2px solid var(--line); }
+  .projects li > div:first-child { font-weight: 600; }
+  .projects .desc { color: var(--muted); font-size: .9rem; }
+  .projects .chips { margin-top: 6px; }
+
+  /* 자격증 */
+  .certs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .cert { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 22px; }
+  .cert.main { border-color: var(--accent-soft); background: linear-gradient(160deg, color-mix(in srgb, var(--accent) 10%, var(--surface)), var(--surface)); }
+  .cert .oc { color: var(--accent); }
+  .cert h3 { font-size: 1.05rem; margin-top: 10px; }
+  .cert p { color: var(--muted); font-size: .88rem; }
 
   /* 연락처 */
   .contacts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
   .contact {
     background: var(--surface); border: 1px solid var(--line); border-radius: 14px;
-    padding: 22px; text-decoration: none; box-shadow: var(--shadow); transition: border-color .15s;
+    padding: 22px; text-decoration: none; transition: border-color .15s, transform .15s; position: relative;
   }
-  .contact:hover { border-color: var(--accent); }
-  .contact .label { font-size: .85rem; color: var(--muted); }
-  .contact .value { font-weight: 600; margin-top: 4px; overflow-wrap: anywhere; }
+  a.contact:hover { border-color: var(--accent); transform: translateY(-3px); }
+  .contact .label { display: flex; align-items: center; gap: 8px; font-size: .85rem; color: var(--muted); }
+  .contact .label .oc { color: var(--accent); }
+  .contact .value { font-weight: 600; margin-top: 6px; overflow-wrap: anywhere; }
+  .contact .go { position: absolute; top: 20px; right: 20px; color: var(--faint); }
+  .contact .sub { color: var(--muted); font-size: .88rem; }
 
   footer { padding: 40px 0; text-align: center; color: var(--muted); font-size: .85rem; border-top: 1px solid var(--line); }
+  footer .oc { color: var(--accent); }
+
+  /* 스크롤 등장 효과 */
+  .js .reveal { opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s ease; }
+  .js .reveal.in { opacity: 1; transform: none; }
 
   /* 반응형 */
+  @media (max-width: 820px) {
+    .hero .intro { grid-template-columns: 1fr; }
+    .stats { grid-template-columns: repeat(2, 1fr); }
+    .skills, .certs, .contacts { grid-template-columns: 1fr 1fr; }
+  }
   @media (max-width: 640px) {
     .wrap { padding: 0 16px; }
-    nav ul { gap: 16px; }
-    .hero { padding: 64px 0 48px; }
-    .job { grid-template-columns: 1fr; gap: 6px; padding: 20px; }
-    .contacts { grid-template-columns: 1fr; }
+    nav ul { gap: 14px; }
+    nav ul li.opt { display: none; }
+    .hero { padding: 56px 0 48px; }
+    .term pre { min-height: 0; font-size: .78rem; }
+    .stat .num { font-size: 1.6rem; }
+    .skills, .certs, .contacts { grid-template-columns: 1fr; }
+    .timeline::before, .tl-fill { left: 7px; }
+    .tl-item { grid-template-columns: 1fr; gap: 6px; padding-left: 28px; }
+    .tl-year { text-align: left; padding-top: 0; }
+    .tl-dot { left: 1px; top: 6px; }
+    .tl-card { padding: 18px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    .js .reveal { opacity: 1; transform: none; }
+    .seg { transform: none; }
   }
 </style>
 </head>
 <body>
+<!-- Octicons (MIT, GitHub) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="oc-terminal" viewBox="0 0 16 16"><path d="M0 2.75C0 1.784.784 1 1.75 1h12.5c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0 1 14.25 15H1.75A1.75 1.75 0 0 1 0 13.25Zm1.75-.25a.25.25 0 0 0-.25.25v10.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V2.75a.25.25 0 0 0-.25-.25ZM7.25 8a.749.749 0 0 1-.22.53l-2.25 2.25a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734L5.44 8 3.72 6.28a.749.749 0 0 1 .326-1.275.749.749 0 0 1 .734.215l2.25 2.25c.141.14.22.331.22.53Zm1.5 1.5h3a.75.75 0 0 1 0 1.5h-3a.75.75 0 0 1 0-1.5Z"></path></symbol><symbol id="oc-briefcase" viewBox="0 0 16 16"><path d="M6.75 0h2.5C10.216 0 11 .784 11 1.75V3h3.25c.966 0 1.75.784 1.75 1.75v8.5A1.75 1.75 0 0 1 14.25 15H1.75A1.75 1.75 0 0 1 0 13.25v-8.5C0 3.784.784 3 1.75 3H5V1.75C5 .784 5.784 0 6.75 0ZM3.5 9.5a3.49 3.49 0 0 1-2-.627v4.377c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V8.873a3.49 3.49 0 0 1-2 .627Zm-1.75-5a.25.25 0 0 0-.25.25V6a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2V4.75a.25.25 0 0 0-.25-.25H1.75ZM9.5 3V1.75a.25.25 0 0 0-.25-.25h-2.5a.25.25 0 0 0-.25.25V3Z"></path></symbol><symbol id="oc-mark-github" viewBox="0 0 16 16"><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"></path></symbol><symbol id="oc-mail" viewBox="0 0 16 16"><path d="M1.75 2h12.5c.966 0 1.75.784 1.75 1.75v8.5A1.75 1.75 0 0 1 14.25 14H1.75A1.75 1.75 0 0 1 0 12.25v-8.5C0 2.784.784 2 1.75 2ZM1.5 12.251c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V5.809L8.38 9.397a.75.75 0 0 1-.76 0L1.5 5.809v6.442Zm13-8.181v-.32a.25.25 0 0 0-.25-.25H1.75a.25.25 0 0 0-.25.25v.32L8 7.88Z"></path></symbol><symbol id="oc-history" viewBox="0 0 16 16"><path d="m.427 1.927 1.215 1.215a8.002 8.002 0 1 1-1.6 5.685.75.75 0 1 1 1.493-.154 6.5 6.5 0 1 0 1.18-4.458l1.358 1.358A.25.25 0 0 1 3.896 6H.25A.25.25 0 0 1 0 5.75V2.104a.25.25 0 0 1 .427-.177ZM7.75 4a.75.75 0 0 1 .75.75v2.992l2.028.812a.75.75 0 0 1-.557 1.392l-2.5-1A.751.751 0 0 1 7 8.25v-3.5A.75.75 0 0 1 7.75 4Z"></path></symbol><symbol id="oc-repo" viewBox="0 0 16 16"><path d="M2 2.5A2.5 2.5 0 0 1 4.5 0h8.75a.75.75 0 0 1 .75.75v12.5a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 1 0-1.5h1.75v-2h-8a1 1 0 0 0-.714 1.7.75.75 0 1 1-1.072 1.05A2.495 2.495 0 0 1 2 11.5Zm10.5-1h-8a1 1 0 0 0-1 1v6.708A2.486 2.486 0 0 1 4.5 9h8ZM5 12.25a.25.25 0 0 1 .25-.25h3.5a.25.25 0 0 1 .25.25v3.25a.25.25 0 0 1-.4.2l-1.45-1.087a.249.249 0 0 0-.3 0L5.4 15.7a.25.25 0 0 1-.4-.2Z"></path></symbol><symbol id="oc-organization" viewBox="0 0 16 16"><path d="M1.75 16A1.75 1.75 0 0 1 0 14.25V1.75C0 .784.784 0 1.75 0h8.5C11.216 0 12 .784 12 1.75v12.5c0 .085-.006.168-.018.25h2.268a.25.25 0 0 0 .25-.25V8.285a.25.25 0 0 0-.111-.208l-1.055-.703a.749.749 0 1 1 .832-1.248l1.055.703c.487.325.779.871.779 1.456v5.965A1.75 1.75 0 0 1 14.25 16h-3.5a.766.766 0 0 1-.197-.026c-.099.017-.2.026-.303.026h-3a.75.75 0 0 1-.75-.75V14h-1v1.25a.75.75 0 0 1-.75.75Zm-.25-1.75c0 .138.112.25.25.25H4v-1.25a.75.75 0 0 1 .75-.75h2.5a.75.75 0 0 1 .75.75v1.25h2.25a.25.25 0 0 0 .25-.25V1.75a.25.25 0 0 0-.25-.25h-8.5a.25.25 0 0 0-.25.25ZM3.75 6h.5a.75.75 0 0 1 0 1.5h-.5a.75.75 0 0 1 0-1.5ZM3 3.75A.75.75 0 0 1 3.75 3h.5a.75.75 0 0 1 0 1.5h-.5A.75.75 0 0 1 3 3.75Zm4 3A.75.75 0 0 1 7.75 6h.5a.75.75 0 0 1 0 1.5h-.5A.75.75 0 0 1 7 6.75ZM7.75 3h.5a.75.75 0 0 1 0 1.5h-.5a.75.75 0 0 1 0-1.5ZM3 9.75A.75.75 0 0 1 3.75 9h.5a.75.75 0 0 1 0 1.5h-.5A.75.75 0 0 1 3 9.75ZM7.75 9h.5a.75.75 0 0 1 0 1.5h-.5a.75.75 0 0 1 0-1.5Z"></path></symbol><symbol id="oc-verified" viewBox="0 0 16 16"><path d="m9.585.52.929.68c.153.112.331.186.518.215l1.138.175a2.678 2.678 0 0 1 2.24 2.24l.174 1.139c.029.187.103.365.215.518l.68.928a2.677 2.677 0 0 1 0 3.17l-.68.928a1.174 1.174 0 0 0-.215.518l-.175 1.138a2.678 2.678 0 0 1-2.241 2.241l-1.138.175a1.17 1.17 0 0 0-.518.215l-.928.68a2.677 2.677 0 0 1-3.17 0l-.928-.68a1.174 1.174 0 0 0-.518-.215L3.83 14.41a2.678 2.678 0 0 1-2.24-2.24l-.175-1.138a1.17 1.17 0 0 0-.215-.518l-.68-.928a2.677 2.677 0 0 1 0-3.17l.68-.928c.112-.153.186-.331.215-.518l.175-1.14a2.678 2.678 0 0 1 2.24-2.24l1.139-.175c.187-.029.365-.103.518-.215l.928-.68a2.677 2.677 0 0 1 3.17 0ZM7.303 1.728l-.927.68a2.67 2.67 0 0 1-1.18.489l-1.137.174a1.179 1.179 0 0 0-.987.987l-.174 1.136a2.677 2.677 0 0 1-.489 1.18l-.68.928a1.18 1.18 0 0 0 0 1.394l.68.927c.256.348.424.753.489 1.18l.174 1.137c.078.509.478.909.987.987l1.136.174a2.67 2.67 0 0 1 1.18.489l.928.68c.414.305.979.305 1.394 0l.927-.68a2.67 2.67 0 0 1 1.18-.489l1.137-.174a1.18 1.18 0 0 0 .987-.987l.174-1.136a2.67 2.67 0 0 1 .489-1.18l.68-.928a1.176 1.176 0 0 0 0-1.394l-.68-.927a2.686 2.686 0 0 1-.489-1.18l-.174-1.137a1.179 1.179 0 0 0-.987-.987l-1.136-.174a2.677 2.677 0 0 1-1.18-.489l-.928-.68a1.176 1.176 0 0 0-1.394 0ZM11.28 6.78l-3.75 3.75a.75.75 0 0 1-1.06 0L4.72 8.78a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L7 8.94l3.22-3.22a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042Z"></path></symbol><symbol id="oc-stack" viewBox="0 0 16 16"><path d="M7.122.392a1.75 1.75 0 0 1 1.756 0l5.003 2.902c.83.481.83 1.68 0 2.162L8.878 8.358a1.75 1.75 0 0 1-1.756 0L2.119 5.456a1.251 1.251 0 0 1 0-2.162ZM8.125 1.69a.248.248 0 0 0-.25 0l-4.63 2.685 4.63 2.685a.248.248 0 0 0 .25 0l4.63-2.685ZM1.601 7.789a.75.75 0 0 1 1.025-.273l5.249 3.044a.248.248 0 0 0 .25 0l5.249-3.044a.75.75 0 0 1 .752 1.298l-5.248 3.044a1.75 1.75 0 0 1-1.756 0L1.874 8.814A.75.75 0 0 1 1.6 7.789Zm0 3.5a.75.75 0 0 1 1.025-.273l5.249 3.044a.248.248 0 0 0 .25 0l5.249-3.044a.75.75 0 0 1 .752 1.298l-5.248 3.044a1.75 1.75 0 0 1-1.756 0l-5.248-3.044a.75.75 0 0 1-.273-1.025Z"></path></symbol><symbol id="oc-server" viewBox="0 0 16 16"><path d="M1.75 1h12.5c.966 0 1.75.784 1.75 1.75v4c0 .372-.116.717-.314 1 .198.283.314.628.314 1v4a1.75 1.75 0 0 1-1.75 1.75H1.75A1.75 1.75 0 0 1 0 12.75v-4c0-.358.109-.707.314-1a1.739 1.739 0 0 1-.314-1v-4C0 1.784.784 1 1.75 1ZM1.5 2.75v4c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25v-4a.25.25 0 0 0-.25-.25H1.75a.25.25 0 0 0-.25.25Zm.25 5.75a.25.25 0 0 0-.25.25v4c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25v-4a.25.25 0 0 0-.25-.25ZM7 4.75A.75.75 0 0 1 7.75 4h4.5a.75.75 0 0 1 0 1.5h-4.5A.75.75 0 0 1 7 4.75ZM7.75 10h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1 0-1.5ZM3 4.75A.75.75 0 0 1 3.75 4h.5a.75.75 0 0 1 0 1.5h-.5A.75.75 0 0 1 3 4.75ZM3.75 10h.5a.75.75 0 0 1 0 1.5h-.5a.75.75 0 0 1 0-1.5Z"></path></symbol><symbol id="oc-code" viewBox="0 0 16 16"><path d="m11.28 3.22 4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734L13.94 8l-3.72-3.72a.749.749 0 0 1 .326-1.275.749.749 0 0 1 .734.215Zm-6.56 0a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042L2.06 8l3.72 3.72a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215L.47 8.53a.75.75 0 0 1 0-1.06Z"></path></symbol><symbol id="oc-database" viewBox="0 0 16 16"><path d="M1 3.5c0-.626.292-1.165.7-1.59.406-.422.956-.767 1.579-1.041C4.525.32 6.195 0 8 0c1.805 0 3.475.32 4.722.869.622.274 1.172.62 1.578 1.04.408.426.7.965.7 1.591v9c0 .626-.292 1.165-.7 1.59-.406.422-.956.767-1.579 1.041C11.476 15.68 9.806 16 8 16c-1.805 0-3.475-.32-4.721-.869-.623-.274-1.173-.62-1.579-1.04-.408-.426-.7-.965-.7-1.591Zm1.5 0c0 .133.058.318.282.551.227.237.591.483 1.101.707C4.898 5.205 6.353 5.5 8 5.5c1.646 0 3.101-.295 4.118-.742.508-.224.873-.471 1.1-.708.224-.232.282-.417.282-.55 0-.133-.058-.318-.282-.551-.227-.237-.591-.483-1.101-.707C11.102 1.795 9.647 1.5 8 1.5c-1.646 0-3.101.295-4.118.742-.508.224-.873.471-1.1.708-.224.232-.282.417-.282.55Zm0 4.5c0 .133.058.318.282.551.227.237.591.483 1.101.707C4.898 9.705 6.353 10 8 10c1.646 0 3.101-.295 4.118-.742.508-.224.873-.471 1.1-.708.224-.232.282-.417.282-.55V5.724c-.241.15-.503.286-.778.407C11.475 6.68 9.805 7 8 7c-1.805 0-3.475-.32-4.721-.869a6.15 6.15 0 0 1-.779-.407Zm0 2.225V12.5c0 .133.058.318.282.55.227.237.592.484 1.1.708 1.016.447 2.471.742 4.118.742 1.647 0 3.102-.295 4.117-.742.51-.224.874-.47 1.101-.707.224-.233.282-.418.282-.551v-2.275c-.241.15-.503.285-.778.406-1.247.549-2.917.869-4.722.869-1.805 0-3.475-.32-4.721-.869a6.327 6.327 0 0 1-.779-.406Z"></path></symbol><symbol id="oc-cloud" viewBox="0 0 16 16"><path d="M2 7.25A5.225 5.225 0 0 1 7.25 2a5.222 5.222 0 0 1 4.767 3.029A4.472 4.472 0 0 1 16 9.5c0 2.505-1.995 4.5-4.5 4.5h-8A3.474 3.474 0 0 1 0 10.5c0-1.41.809-2.614 2.001-3.17Zm1.54.482a.75.75 0 0 1-.556.832c-.86.22-1.484.987-1.484 1.936 0 1.124.876 2 2 2h8c1.676 0 3-1.324 3-3s-1.324-3-3-3a.75.75 0 0 1-.709-.504A3.72 3.72 0 0 0 7.25 3.5C5.16 3.5 3.5 5.16 3.5 7.25c.002.146.014.292.035.436l.004.036.001.008Z"></path></symbol><symbol id="oc-tools" viewBox="0 0 16 16"><path d="M5.433 2.304A4.492 4.492 0 0 0 3.5 6c0 1.598.832 3.002 2.09 3.802.518.328.929.923.902 1.64v.008l-.164 3.337a.75.75 0 1 1-1.498-.073l.163-3.33c.002-.085-.05-.216-.207-.316A5.996 5.996 0 0 1 2 6a5.993 5.993 0 0 1 2.567-4.92 1.482 1.482 0 0 1 1.673-.04c.462.296.76.827.76 1.423v2.82c0 .082.041.16.11.206l.75.51a.25.25 0 0 0 .28 0l.75-.51A.249.249 0 0 0 9 5.282V2.463c0-.596.298-1.127.76-1.423a1.482 1.482 0 0 1 1.673.04A5.993 5.993 0 0 1 14 6a5.996 5.996 0 0 1-2.786 5.068c-.157.1-.209.23-.207.315l.163 3.33a.752.752 0 0 1-1.094.714.75.75 0 0 1-.404-.64l-.164-3.345c-.027-.717.384-1.312.902-1.64A4.495 4.495 0 0 0 12.5 6a4.492 4.492 0 0 0-1.933-3.696c-.024.017-.067.067-.067.16v2.818a1.75 1.75 0 0 1-.767 1.448l-.75.51a1.75 1.75 0 0 1-1.966 0l-.75-.51A1.75 1.75 0 0 1 5.5 5.282V2.463c0-.092-.043-.142-.067-.159Z"></path></symbol><symbol id="oc-copilot" viewBox="0 0 16 16"><path d="M7.998 15.035c-4.562 0-7.873-2.914-7.998-3.749V9.338c.085-.628.677-1.686 1.588-2.065.013-.07.024-.143.036-.218.029-.183.06-.384.126-.612-.201-.508-.254-1.084-.254-1.656 0-.87.128-1.769.693-2.484.579-.733 1.494-1.124 2.724-1.261 1.206-.134 2.262.034 2.944.765.05.053.096.108.139.165.044-.057.094-.112.143-.165.682-.731 1.738-.899 2.944-.765 1.23.137 2.145.528 2.724 1.261.566.715.693 1.614.693 2.484 0 .572-.053 1.148-.254 1.656.066.228.098.429.126.612.012.076.024.148.037.218.924.385 1.522 1.471 1.591 2.095v1.872c0 .766-3.351 3.795-8.002 3.795Zm0-1.485c2.28 0 4.584-1.11 5.002-1.433V7.862l-.023-.116c-.49.21-1.075.291-1.727.291-1.146 0-2.059-.327-2.71-.991A3.222 3.222 0 0 1 8 6.303a3.24 3.24 0 0 1-.544.743c-.65.664-1.563.991-2.71.991-.652 0-1.236-.081-1.727-.291l-.023.116v4.255c.419.323 2.722 1.433 5.002 1.433ZM6.762 2.83c-.193-.206-.637-.413-1.682-.297-1.019.113-1.479.404-1.713.7-.247.312-.369.789-.369 1.554 0 .793.129 1.171.308 1.371.162.181.519.379 1.442.379.853 0 1.339-.235 1.638-.54.315-.322.527-.827.617-1.553.117-.935-.037-1.395-.241-1.614Zm4.155-.297c-1.044-.116-1.488.091-1.681.297-.204.219-.359.679-.242 1.614.091.726.303 1.231.618 1.553.299.305.784.54 1.638.54.922 0 1.28-.198 1.442-.379.179-.2.308-.578.308-1.371 0-.765-.123-1.242-.37-1.554-.233-.296-.693-.587-1.713-.7Z"></path><path d="M6.25 9.037a.75.75 0 0 1 .75.75v1.501a.75.75 0 0 1-1.5 0V9.787a.75.75 0 0 1 .75-.75Zm4.25.75v1.501a.75.75 0 0 1-1.5 0V9.787a.75.75 0 0 1 1.5 0Z"></path></symbol><symbol id="oc-calendar" viewBox="0 0 16 16"><path d="M4.75 0a.75.75 0 0 1 .75.75V2h5V.75a.75.75 0 0 1 1.5 0V2h1.25c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0 1 13.25 16H2.75A1.75 1.75 0 0 1 1 14.25V3.75C1 2.784 1.784 2 2.75 2H4V.75A.75.75 0 0 1 4.75 0ZM2.5 7.5v6.75c0 .138.112.25.25.25h10.5a.25.25 0 0 0 .25-.25V7.5Zm10.75-4H2.75a.25.25 0 0 0-.25.25V6h11V3.75a.25.25 0 0 0-.25-.25Z"></path></symbol><symbol id="oc-person" viewBox="0 0 16 16"><path d="M10.561 8.073a6.005 6.005 0 0 1 3.432 5.142.75.75 0 1 1-1.498.07 4.5 4.5 0 0 0-8.99 0 .75.75 0 0 1-1.498-.07 6.004 6.004 0 0 1 3.431-5.142 3.999 3.999 0 1 1 5.123 0ZM10.5 5a2.5 2.5 0 1 0-5 0 2.5 2.5 0 0 0 5 0Z"></path></symbol><symbol id="oc-check-circle" viewBox="0 0 16 16"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm1.5 0a6.5 6.5 0 1 0 13 0 6.5 6.5 0 0 0-13 0Zm10.28-1.72-4.5 4.5a.75.75 0 0 1-1.06 0l-2-2a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l1.47 1.47 3.97-3.97a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042Z"></path></symbol><symbol id="oc-arrow-up-right" viewBox="0 0 16 16"><path d="M4.53 4.75A.75.75 0 0 1 5.28 4h6.01a.75.75 0 0 1 .75.75v6.01a.75.75 0 0 1-1.5 0v-4.2l-5.26 5.261a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734L9.48 5.5h-4.2a.75.75 0 0 1-.75-.75Z"></path></symbol><symbol id="oc-location" viewBox="0 0 16 16"><path d="m12.596 11.596-3.535 3.536a1.5 1.5 0 0 1-2.122 0l-3.535-3.536a6.5 6.5 0 1 1 9.192-9.193 6.5 6.5 0 0 1 0 9.193Zm-1.06-8.132v-.001a5 5 0 1 0-7.072 7.072L8 14.07l3.536-3.534a5 5 0 0 0 0-7.072ZM8 9a2 2 0 1 1-.001-3.999A2 2 0 0 1 8 9Z"></path></symbol></svg>
+<div id="progress"></div>
 
 <nav>
   <div class="wrap">
-    <a class="logo" href="#top">Hyunjo</a>
+    <a class="logo" href="#top"><svg class="oc"><use href="#oc-terminal"/></svg>Hyunjo</a>
     <ul>
-      <li><a href="#about">소개</a></li>
+      <li><a href="#skills">기술</a></li>
       <li><a href="#career">경력</a></li>
+      <li class="opt"><a href="#certs">자격증</a></li>
       <li><a href="#contact">연락처</a></li>
     </ul>
   </div>
@@ -116,84 +281,478 @@
 
 <main id="top">
   <header class="hero" id="about">
+    <div class="wrap intro">
+      <div class="reveal">
+        <div class="badge"><span class="dot"></span>현재 (주)에이콘컴퍼니 · 웹개발자 / PL</div>
+        <h1>공공 SI 18년차,<br>웹 개발자 <span>조현</span>입니다.</h1>
+        <p>
+          2007년부터 공공기관과 연구기관의 웹 시스템을 만들고 운영해 왔습니다.
+          전자정부표준프레임워크·Spring·MyBatis 기반 백엔드부터 jQuery·Ajax 화면까지 직접 다루며,
+          최근에는 PL로서 플랫폼 개발과 운영을 함께 맡고 있습니다.
+          ChatGPT, GitHub Copilot, Claude Code 같은 AI 도구도 실무에 적극 활용합니다.
+        </p>
+        <div class="btns">
+          <a class="btn primary" href="#career"><svg class="oc"><use href="#oc-briefcase"/></svg>경력 보기</a>
+          <a class="btn" href="https://github.com/winsHyun" target="_blank" rel="noopener"><svg class="oc"><use href="#oc-mark-github"/></svg>GitHub</a>
+          <a class="btn" href="#contact"><svg class="oc"><use href="#oc-mail"/></svg>연락하기</a>
+        </div>
+      </div>
+      <div class="term reveal" aria-label="프로필 요약">
+        <div class="term-bar"><i></i><i></i><i></i><span>~/hyunjo — profile.json</span></div>
+        <pre id="term"></pre>
+      </div>
+    </div>
     <div class="wrap">
-      <div class="badge">개발자 · Developer</div>
-      <h1>안녕하세요,<br>개발자 <span>Hyunjo</span>입니다.</h1>
-      <p>
-        반복되는 일을 코드로 자동화하고, 복잡한 문제를 단순하게 풀어내는 것을 좋아합니다.
-        요즘은 Claude Code와 함께 업무 환경을 정리하고 작은 자동화 도구를 만들며
-        AI를 실무에 녹이는 방법을 배우고 있습니다.
-      </p>
-      <div class="btns">
-        <a class="btn primary" href="#contact">연락하기</a>
-        <a class="btn" href="#career">경력 보기</a>
+      <div class="stats">
+        <div class="stat reveal"><svg class="oc lg"><use href="#oc-history"/></svg><div class="num"><span data-count="18">18</span><small>년 10개월</small></div><div class="label">총 경력</div></div>
+        <div class="stat reveal"><svg class="oc lg"><use href="#oc-repo"/></svg><div class="num"><span data-count-from=".projects li">28</span><small>건</small></div><div class="label">참여 프로젝트</div></div>
+        <div class="stat reveal"><svg class="oc lg"><use href="#oc-organization"/></svg><div class="num"><span data-count-from="client">7</span><small>곳</small></div><div class="label">발주기관</div></div>
+        <div class="stat reveal"><svg class="oc lg"><use href="#oc-verified"/></svg><div class="num"><span>정보처리</span><small>기사</small></div><div class="label">대표 자격</div></div>
       </div>
     </div>
   </header>
 
+  <section id="skills">
+    <div class="wrap">
+      <h2 class="reveal"><svg class="oc lg"><use href="#oc-stack"/></svg>기술 스택</h2>
+      <p class="lead reveal">공공 SI 현장에서 오래 써 온 기술과, 요즘 함께 쓰는 도구들입니다.</p>
+      <div class="skills">
+        <div class="skill reveal">
+          <h3><svg class="oc"><use href="#oc-server"/></svg>Backend</h3>
+          <div class="chips"><span class="chip">Java</span><span class="chip">JSP</span><span class="chip">Spring</span><span class="chip">전자정부표준프레임워크</span><span class="chip">MyBatis</span><span class="chip">iBATIS</span><span class="chip">JEXframework</span></div>
+        </div>
+        <div class="skill reveal">
+          <h3><svg class="oc"><use href="#oc-code"/></svg>Frontend</h3>
+          <div class="chips"><span class="chip">jQuery</span><span class="chip">Ajax</span><span class="chip">JSON</span><span class="chip">XML</span><span class="chip">AnyBuilder</span></div>
+        </div>
+        <div class="skill reveal">
+          <h3><svg class="oc"><use href="#oc-database"/></svg>Database</h3>
+          <div class="chips"><span class="chip">Oracle</span><span class="chip">MySQL</span><span class="chip">CUBRID</span><span class="chip">Tibero</span><span class="chip">Altibase</span><span class="chip">SQL</span></div>
+        </div>
+        <div class="skill reveal">
+          <h3><svg class="oc"><use href="#oc-cloud"/></svg>Cloud</h3>
+          <div class="chips"><span class="chip">ncloud</span><span class="chip">ktcloud</span></div>
+        </div>
+        <div class="skill reveal">
+          <h3><svg class="oc"><use href="#oc-tools"/></svg>Tools</h3>
+          <div class="chips"><span class="chip">Eclipse</span><span class="chip">VS Code</span><span class="chip">Git</span><span class="chip">SVN</span><span class="chip">Antigravity IDE</span></div>
+        </div>
+        <div class="skill reveal">
+          <h3><svg class="oc"><use href="#oc-copilot"/></svg>AI</h3>
+          <div class="chips"><span class="chip">ChatGPT</span><span class="chip">OpenAI API</span><span class="chip">GitHub Copilot</span><span class="chip">Claude Code</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section id="career">
     <div class="wrap">
-      <h2>경력 사항</h2>
-      <div class="timeline">
-        <article class="job">
-          <div class="period">2024.03 – 현재</div>
-          <div>
-            <h3>A테크 <span class="tag">예시</span></h3>
-            <div class="role">백엔드 개발자</div>
-            <ul>
-              <li>REST API 설계 및 개발, 응답 속도 40% 개선</li>
-              <li>배포 자동화 파이프라인 구축으로 릴리스 시간 단축</li>
+      <h2 class="reveal"><svg class="oc lg"><use href="#oc-briefcase"/></svg>경력 타임라인</h2>
+      <p class="lead reveal">2007년부터 지금까지의 흐름입니다. 막대를 누르면 해당 경력으로 이동하고, 기술로 걸러 볼 수도 있어요.</p>
+
+      <div class="gantt reveal" id="gantt">
+        <div class="gantt-track" id="gantt-track"></div>
+        <div class="gantt-axis" id="gantt-axis"></div>
+        <div class="gantt-foot">
+          <div class="legend"><span><i></i>프리랜서</span><span class="staff"><i></i>재직</span></div>
+          <div id="tip">막대에 마우스를 올려 보세요</div>
+        </div>
+      </div>
+
+      <div class="filters reveal" id="filters" role="group" aria-label="기술로 거르기">
+        <button class="filter on" data-f="all">전체</button>
+        <button class="filter" data-f="egov">전자정부프레임워크</button>
+        <button class="filter" data-f="spring">Spring</button>
+        <button class="filter" data-f="mybatis">MyBatis</button>
+        <button class="filter" data-f="ibatis">iBATIS</button>
+        <button class="filter" data-f="jquery">jQuery</button>
+        <button class="filter" data-f="oracle">Oracle</button>
+        <button class="filter" data-f="mysql">MySQL</button>
+        <button class="filter" data-f="cubrid">CUBRID</button>
+      </div>
+
+      <div class="timeline" id="timeline">
+        <div class="tl-fill" id="tl-fill"></div>
+
+        <article class="tl-item now reveal" data-start="2023-02" data-end="" data-tags="egov mybatis jquery cubrid mysql">
+          <div class="tl-year">2023</div><span class="tl-dot"></span>
+          <div class="tl-card">
+            <div class="tl-head"><span class="period"><svg class="oc"><use href="#oc-calendar"/></svg>2023.02 – 현재</span><span class="dur" data-live>재직중</span></div>
+            <h3>(주)에이콘컴퍼니 <span class="pill">개발 프리랜서</span><span class="pill live">재직중</span></h3>
+            <div class="meta"><span><svg class="oc"><use href="#oc-person"/></svg>웹개발자 · PL</span><span data-client><svg class="oc"><use href="#oc-organization"/></svg>농림수산식품교육문화정보원</span></div>
+            <ul class="projects">
+              <li><div>도농인력중개 플랫폼</div><div class="desc">1·2차 운영 → 2·3차 개발 → 3차 운영</div><div class="chips"><span class="chip">ncloud</span><span class="chip">전자정부프레임워크</span><span class="chip">MyBatis</span><span class="chip">jQuery</span><span class="chip">CUBRID</span></div></li>
+              <li><div>반려동물지도사 자격정보시스템 운영 및 고도화</div><div class="chips"><span class="chip">ktcloud</span><span class="chip">전자정부프레임워크</span><span class="chip">MyBatis</span><span class="chip">MySQL</span></div></li>
             </ul>
           </div>
         </article>
-        <article class="job">
-          <div class="period">2022.01 – 2024.02</div>
-          <div>
-            <h3>B소프트 <span class="tag">예시</span></h3>
-            <div class="role">웹 개발자</div>
-            <ul>
-              <li>사내 관리 시스템 신규 구축 (사용자 300명)</li>
-              <li>반응형 UI 개편으로 모바일 이용률 2배 증가</li>
+
+        <article class="tl-item reveal" data-start="2019-11" data-end="2023-01" data-tags="egov mybatis ibatis jquery mysql">
+          <div class="tl-year">2019</div><span class="tl-dot"></span>
+          <div class="tl-card">
+            <div class="tl-head"><span class="period"><svg class="oc"><use href="#oc-calendar"/></svg>2019.11 – 2023.01</span><span class="dur">3년 3개월</span></div>
+            <h3>케이엘정보통신 <span class="pill">R&amp;D사업본부 프리랜서</span></h3>
+            <div class="meta"><span><svg class="oc"><use href="#oc-person"/></svg>웹개발자</span><span data-client><svg class="oc"><use href="#oc-organization"/></svg>중소기업기술정보진흥원</span></div>
+            <ul class="projects">
+              <li><div>TIPA 클라우드컴퓨팅 경영혁신플랫폼 정보시스템 운영 및 유지관리 1·2·3차</div><div class="desc">서비스포탈 및 특화솔루션 담당</div><div class="chips"><span class="chip">전자정부프레임워크</span><span class="chip">MyBatis</span><span class="chip">iBATIS</span><span class="chip">jQuery</span><span class="chip">MySQL</span></div></li>
             </ul>
           </div>
         </article>
-        <article class="job">
-          <div class="period">2020.07 – 2021.12</div>
-          <div>
-            <h3>C스튜디오 <span class="tag">예시</span></h3>
-            <div class="role">주니어 개발자</div>
-            <ul>
-              <li>고객사 웹사이트 유지보수 및 기능 개선</li>
-              <li>반복 업무 스크립트 작성으로 주 5시간 절약</li>
+
+        <article class="tl-item reveal" data-start="2016-10" data-end="2019-11" data-tags="egov mybatis ibatis jquery mysql">
+          <div class="tl-year">2016</div><span class="tl-dot"></span>
+          <div class="tl-card">
+            <div class="tl-head"><span class="period"><svg class="oc"><use href="#oc-calendar"/></svg>2016.10 – 2019.11</span><span class="dur">3년 2개월</span></div>
+            <h3>케이엘정보통신 <span class="pill">R&amp;D사업본부 프리랜서</span></h3>
+            <div class="meta"><span><svg class="oc"><use href="#oc-person"/></svg>웹개발자</span><span data-client><svg class="oc"><use href="#oc-organization"/></svg>중소기업기술정보진흥원</span></div>
+            <ul class="projects">
+              <li><div>TIPA 클라우드컴퓨팅 경영혁신플랫폼 정보시스템 운영 및 유지관리</div><div class="desc">특화솔루션 운영 및 활성화 재개발</div><div class="chips"><span class="chip">전자정부프레임워크</span><span class="chip">MyBatis</span><span class="chip">iBATIS</span><span class="chip">jQuery</span><span class="chip">MySQL</span></div></li>
             </ul>
           </div>
         </article>
+
+        <article class="tl-item reveal" data-start="2016-09" data-end="2016-10" data-tags="egov spring jquery cubrid mybatis">
+          <div class="tl-year">2016</div><span class="tl-dot"></span>
+          <div class="tl-card">
+            <div class="tl-head"><span class="period"><svg class="oc"><use href="#oc-calendar"/></svg>2016.09 – 2016.10</span><span class="dur">2개월</span></div>
+            <h3>파이브핑거시스템 <span class="pill">개발부 프리랜서</span></h3>
+            <div class="meta"><span><svg class="oc"><use href="#oc-person"/></svg>웹개발자</span><span data-client><svg class="oc"><use href="#oc-organization"/></svg>NIA 한국지능정보사회진흥원</span></div>
+            <ul class="projects">
+              <li><div>NIA 한국정보화진흥원 클라우드 개발</div><div class="chips"><span class="chip">전자정부프레임워크</span><span class="chip">Spring</span><span class="chip">jQuery</span><span class="chip">CUBRID</span><span class="chip">MyBatis</span></div></li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="tl-item reveal" data-start="2016-04" data-end="2016-08" data-tags="egov ibatis jquery">
+          <div class="tl-year">2016</div><span class="tl-dot"></span>
+          <div class="tl-card">
+            <div class="tl-head"><span class="period"><svg class="oc"><use href="#oc-calendar"/></svg>2016.04 – 2016.08</span><span class="dur">5개월</span></div>
+            <h3>에세텔 <span class="pill">개발부 프리랜서</span></h3>
+            <div class="meta"><span><svg class="oc"><use href="#oc-person"/></svg>웹개발자</span><span data-client><svg class="oc"><use href="#oc-organization"/></svg>TS 교통안전공단</span></div>
+            <ul class="projects">
+              <li><div>DRT 수요응답형 교통 개발</div><div class="desc">Android 앱과 Web Server 간 통신 개발</div><div class="chips"><span class="chip">전자정부프레임워크</span><span class="chip">iBATIS</span><span class="chip">Altibase</span><span class="chip">jQuery</span><span class="chip">Ajax</span><span class="chip">XML</span><span class="chip">JSON</span></div></li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="tl-item reveal" data-start="2015-08" data-end="2016-02" data-tags="egov jquery mysql">
+          <div class="tl-year">2015</div><span class="tl-dot"></span>
+          <div class="tl-card">
+            <div class="tl-head"><span class="period"><svg class="oc"><use href="#oc-calendar"/></svg>2015.08 – 2016.02</span><span class="dur">7개월</span></div>
+            <h3>파이브핑거시스템 <span class="pill">개발 프리랜서</span></h3>
+            <div class="meta"><span><svg class="oc"><use href="#oc-person"/></svg>웹개발자</span><span data-client><svg class="oc"><use href="#oc-organization"/></svg>중소기업기술정보진흥원</span></div>
+            <ul class="projects">
+              <li><div>TIPA 클라우드컴퓨팅 경영혁신 플랫폼 운영</div><div class="chips"><span class="chip">전자정부프레임워크</span><span class="chip">JEXframework</span><span class="chip">jQuery</span><span class="chip">MySQL</span></div></li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="tl-item staff reveal" data-start="2014-05" data-end="2015-06" data-tags="egov spring ibatis jquery mysql oracle">
+          <div class="tl-year">2014</div><span class="tl-dot"></span>
+          <div class="tl-card">
+            <div class="tl-head"><span class="period"><svg class="oc"><use href="#oc-calendar"/></svg>2014.05 – 2015.06</span><span class="dur">1년 2개월</span></div>
+            <h3>메이아이 <span class="pill">개발 팀원</span></h3>
+            <div class="meta"><span><svg class="oc"><use href="#oc-person"/></svg>웹개발자 · Oracle</span></div>
+            <ul class="projects">
+              <li><div>ETRI 기술이전 사이트 개발</div><div class="chips"><span class="chip">Spring</span><span class="chip">iBATIS</span><span class="chip">jQuery</span></div></li>
+              <li><div>전북대학교 IT 융복합시스템 개발</div><div class="chips"><span class="chip">전자정부프레임워크</span><span class="chip">Spring</span><span class="chip">jQuery</span><span class="chip">MySQL</span></div></li>
+              <li><div>보령시 대민포털 개발</div><div class="chips"><span class="chip">전자정부프레임워크</span><span class="chip">iBATIS</span><span class="chip">Tibero</span></div></li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="tl-item reveal" data-start="2013-11" data-end="2014-04" data-tags="jquery oracle">
+          <div class="tl-year">2013</div><span class="tl-dot"></span>
+          <div class="tl-card">
+            <div class="tl-head"><span class="period"><svg class="oc"><use href="#oc-calendar"/></svg>2013.11 – 2014.04</span><span class="dur">6개월</span></div>
+            <h3>웹케시 <span class="pill">개발 프리랜서</span></h3>
+            <div class="meta"><span><svg class="oc"><use href="#oc-person"/></svg>웹개발자</span><span data-client><svg class="oc"><use href="#oc-organization"/></svg>한국산업기술평가관리원</span></div>
+            <ul class="projects">
+              <li><div>KEIT RCMS 실시간통합연구비관리시스템 고도화</div><div class="chips"><span class="chip">JEXframework</span><span class="chip">jQuery</span><span class="chip">Oracle</span></div></li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="tl-item reveal" data-start="2013-08" data-end="2013-11" data-tags="jquery oracle">
+          <div class="tl-year">2013</div><span class="tl-dot"></span>
+          <div class="tl-card">
+            <div class="tl-head"><span class="period"><svg class="oc"><use href="#oc-calendar"/></svg>2013.08 – 2013.11</span><span class="dur">4개월</span></div>
+            <h3>애니파이브시스템 <span class="pill">개발부 프리랜서</span></h3>
+            <div class="meta"><span><svg class="oc"><use href="#oc-person"/></svg>웹개발자</span><span data-client><svg class="oc"><use href="#oc-organization"/></svg>ETRI 전자통신연구원</span></div>
+            <ul class="projects">
+              <li><div>ETRI 스마트워크를 위한 R&amp;BD 플랫폼 혁신 프로젝트</div><div class="chips"><span class="chip">AnyBuilder</span><span class="chip">Ajax</span><span class="chip">jQuery</span><span class="chip">Grid</span><span class="chip">Oracle</span></div></li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="tl-item staff reveal" data-start="2013-02" data-end="2013-08" data-tags="jquery">
+          <div class="tl-year">2013</div><span class="tl-dot"></span>
+          <div class="tl-card">
+            <div class="tl-head"><span class="period"><svg class="oc"><use href="#oc-calendar"/></svg>2013.02 – 2013.08</span><span class="dur">7개월</span></div>
+            <h3>아이엔지웹 <span class="pill">개발부</span></h3>
+            <div class="meta"><span><svg class="oc"><use href="#oc-person"/></svg>웹개발자</span><span data-client><svg class="oc"><use href="#oc-organization"/></svg>KISTI</span></div>
+            <ul class="projects">
+              <li><div>KOSEN 전문가 개발</div><div class="chips"><span class="chip">Java/JSP</span><span class="chip">jQuery</span></div></li>
+              <li><div>녹색정보포털 개발</div><div class="chips"><span class="chip">Java/JSP</span><span class="chip">jQuery</span></div></li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="tl-item staff reveal" data-start="2011-07" data-end="2013-01" data-tags="spring ibatis mybatis jquery">
+          <div class="tl-year">2011</div><span class="tl-dot"></span>
+          <div class="tl-card">
+            <div class="tl-head"><span class="period"><svg class="oc"><use href="#oc-calendar"/></svg>2011.07 – 2013.01</span><span class="dur">1년 7개월</span></div>
+            <h3>메이아이 <span class="pill">개발부</span></h3>
+            <div class="meta"><span><svg class="oc"><use href="#oc-person"/></svg>웹개발자</span></div>
+            <ul class="projects">
+              <li><div>ETRI 앱관리 시스템 개발</div></li>
+              <li><div>ETRI 대표 홈페이지 개발 및 유지보수</div><div class="chips"><span class="chip">Spring</span><span class="chip">iBATIS</span><span class="chip">jQuery</span></div></li>
+              <li><div>ETRI 종합표준정보 시스템(EORIS) 개발</div><div class="chips"><span class="chip">Spring</span><span class="chip">iBATIS</span><span class="chip">jQuery</span></div></li>
+              <li><div>KAIST (LGENIUS, EPSS, KEPSI, CAFDC) 개발</div><div class="chips"><span class="chip">Java/JSP</span><span class="chip">MyBatis</span></div></li>
+              <li><div>한국조폐공사 대표 홈페이지 개발</div></li>
+              <li><div>한국조폐공사 박물관 / 청렴 사이트 개발</div><div class="chips"><span class="chip">Spring</span><span class="chip">MyBatis</span><span class="chip">jQuery</span></div></li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="tl-item staff reveal" data-start="2009-06" data-end="2011-07" data-tags="">
+          <div class="tl-year">2009</div><span class="tl-dot"></span>
+          <div class="tl-card">
+            <div class="tl-head"><span class="period"><svg class="oc"><use href="#oc-calendar"/></svg>2009.06 – 2011.07</span><span class="dur">2년 2개월</span></div>
+            <h3>아이엔지웹 <span class="pill">개발부</span></h3>
+            <div class="meta"><span><svg class="oc"><use href="#oc-person"/></svg>웹개발자</span><span data-client><svg class="oc"><use href="#oc-organization"/></svg>KISTI</span></div>
+            <ul class="projects">
+              <li><div>한국과학기술자네트워크(KOSEN) 개편 및 유지보수</div><div class="chips"><span class="chip">Java/JSP</span></div></li>
+              <li><div>KOSEN 분석비지급 개발</div><div class="chips"><span class="chip">Java/JSP</span></div></li>
+              <li><div>미리안 개편 및 가시화서비스</div><div class="chips"><span class="chip">Java/JSP</span></div></li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="tl-item staff reveal" data-start="2008-08" data-end="2009-06" data-tags="">
+          <div class="tl-year">2008</div><span class="tl-dot"></span>
+          <div class="tl-card">
+            <div class="tl-head"><span class="period"><svg class="oc"><use href="#oc-calendar"/></svg>2008.08 – 2009.06</span><span class="dur">11개월</span></div>
+            <h3>아데라커뮤니케이션 <span class="pill">개발부</span></h3>
+            <div class="meta"><span><svg class="oc"><use href="#oc-person"/></svg>웹개발자</span></div>
+            <ul class="projects">
+              <li><div>광주시청자미디어 대표 홈페이지 개편</div><div class="chips"><span class="chip">Java/JSP</span></div></li>
+              <li><div>한동대학교 대표 · 입시 사이트 개발</div><div class="chips"><span class="chip">Java/JSP</span></div></li>
+              <li><div>한국산업기술평가원 개발</div><div class="chips"><span class="chip">Java/JSP</span></div></li>
+              <li><div>공주영상대학교 대표 · 입시 · 학과 사이트 개편</div><div class="chips"><span class="chip">Java/JSP</span></div></li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="tl-item staff reveal" data-start="2007-08" data-end="2008-04" data-tags="">
+          <div class="tl-year">2007</div><span class="tl-dot"></span>
+          <div class="tl-card">
+            <div class="tl-head"><span class="period"><svg class="oc"><use href="#oc-calendar"/></svg>2007.08 – 2008.04</span><span class="dur">9개월</span></div>
+            <h3>메이아이 <span class="pill">개발부 팀원</span></h3>
+            <div class="meta"><span><svg class="oc"><use href="#oc-person"/></svg>웹개발자</span></div>
+            <ul class="projects">
+              <li><div>한남대학교 입시 사이트</div><div class="chips"><span class="chip">Java/JSP</span></div></li>
+            </ul>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="certs">
+    <div class="wrap">
+      <h2 class="reveal"><svg class="oc lg"><use href="#oc-verified"/></svg>자격증</h2>
+      <p class="lead reveal">개발 직무와 관련된 자격입니다.</p>
+      <div class="certs">
+        <div class="cert main reveal"><svg class="oc lg"><use href="#oc-check-circle"/></svg><h3>정보처리기사</h3><p>한국산업인력공단 · 2013.11</p></div>
+        <div class="cert reveal"><svg class="oc lg"><use href="#oc-check-circle"/></svg><h3>워드프로세서 2급</h3><p>대한상공회의소 · 1999.08</p></div>
+        <div class="cert reveal"><svg class="oc lg"><use href="#oc-check-circle"/></svg><h3>전산응용기계제도기능사</h3><p>한국산업인력공단 · 1999.07</p></div>
       </div>
     </div>
   </section>
 
   <section id="contact">
     <div class="wrap">
-      <h2>연락처</h2>
+      <h2 class="reveal"><svg class="oc lg"><use href="#oc-mail"/></svg>연락처</h2>
+      <p class="lead reveal">백엔드 · 프론트엔드 · 웹 개발 프로젝트 제안은 언제든 환영합니다.</p>
       <div class="contacts">
-        <a class="contact" href="mailto:hello@example.com">
-          <div class="label">✉️ 이메일</div>
-          <div class="value">hello@example.com</div>
+        <a class="contact reveal" href="mailto:hyunjog@gmail.com">
+          <svg class="oc go"><use href="#oc-arrow-up-right"/></svg>
+          <div class="label"><svg class="oc"><use href="#oc-mail"/></svg>이메일</div>
+          <div class="value">hyunjog@gmail.com</div>
         </a>
-        <a class="contact" href="https://github.com/" target="_blank" rel="noopener">
-          <div class="label">💻 GitHub</div>
-          <div class="value">github.com/username</div>
+        <a class="contact reveal" href="https://github.com/winsHyun" target="_blank" rel="noopener">
+          <svg class="oc go"><use href="#oc-arrow-up-right"/></svg>
+          <div class="label"><svg class="oc"><use href="#oc-mark-github"/></svg>GitHub</div>
+          <div class="value">github.com/winsHyun</div>
         </a>
-        <a class="contact" href="https://www.linkedin.com/" target="_blank" rel="noopener">
-          <div class="label">🔗 LinkedIn</div>
-          <div class="value">linkedin.com/in/username</div>
-        </a>
+        <div class="contact reveal">
+          <div class="label"><svg class="oc"><use href="#oc-location"/></svg>희망 근무 조건</div>
+          <div class="value">계약직 · 프리랜서</div>
+          <div class="sub">대전 · 세종 · 충남</div>
+        </div>
       </div>
     </div>
   </section>
 </main>
 
-<footer>© 2026 Hyunjo. All rights reserved.</footer>
+<footer>© 2026 조현 · Built with <svg class="oc"><use href="#oc-copilot"/></svg> Claude Code</footer>
 
+<script>
+(function () {
+  document.documentElement.classList.add("js");
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+
+  /* "2023-02" → 월 단위 숫자 */
+  var now = new Date();
+  var nowM = now.getFullYear() * 12 + now.getMonth();
+  function toM(s) { if (!s) return nowM; var p = s.split("-"); return +p[0] * 12 + (+p[1] - 1); }
+  function fmtDur(m) { var y = Math.floor(m / 12), r = m % 12; return (y ? y + "년 " : "") + (r ? r + "개월" : "").trim(); }
+
+  var items = $$(".tl-item");
+
+  /* 재직중 기간 자동 계산 (시작월 포함) */
+  $$("[data-live]").forEach(function (el) {
+    var it = el.closest(".tl-item");
+    el.textContent = fmtDur(nowM - toM(it.dataset.start) + 1);
+  });
+
+  /* 숫자 데이터: 프로젝트 수, 발주기관 수 */
+  $("[data-count-from='.projects li']").dataset.count = $$(".projects li").length;
+  var clients = {};
+  $$("[data-client]").forEach(function (el) { clients[el.textContent.trim()] = 1; });
+  $("[data-count-from='client']").dataset.count = Object.keys(clients).length;
+
+  function countUp(el) {
+    var end = +el.dataset.count;
+    if (reduce) { el.textContent = end; return; }
+    var t0 = null;
+    function step(t) {
+      if (!t0) t0 = t;
+      var k = Math.min((t - t0) / 1200, 1);
+      el.textContent = Math.round(end * (1 - Math.pow(1 - k, 3)));
+      if (k < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  /* 스크롤 등장 */
+  var io = new IntersectionObserver(function (es) {
+    es.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      e.target.classList.add("in");
+      $$("[data-count]", e.target).forEach(countUp);
+      io.unobserve(e.target);
+    });
+  }, { threshold: 0.12 });
+  $$(".reveal").forEach(function (el) { io.observe(el); });
+
+  /* 터미널 타이핑 */
+  var term = $("#term");
+  var lines = [
+    '<span class="p">$</span> cat profile.json',
+    '{',
+    '  <span class="k">"name"</span>: <span class="s">"조현"</span>,',
+    '  <span class="k">"role"</span>: [<span class="s">"웹개발자"</span>, <span class="s">"PL"</span>],',
+    '  <span class="k">"career"</span>: <span class="s">"18년 10개월"</span>,',
+    '  <span class="k">"focus"</span>: <span class="s">"공공 SI"</span>,',
+    '  <span class="k">"stack"</span>: [<span class="s">"Java"</span>, <span class="s">"Spring"</span>, <span class="s">"eGovFrame"</span>, <span class="s">"MyBatis"</span>],',
+    '  <span class="k">"db"</span>: [<span class="s">"Oracle"</span>, <span class="s">"MySQL"</span>, <span class="s">"CUBRID"</span>],',
+    '  <span class="k">"ai"</span>: [<span class="s">"Claude Code"</span>, <span class="s">"Copilot"</span>]',
+    '}'
+  ];
+  var caret = '<span class="caret"></span>';
+  if (reduce) {
+    term.innerHTML = lines.join("\n") + "\n" + caret;
+  } else {
+    /* 태그는 한 번에, 글자는 하나씩 */
+    var full = lines.join("\n"), i = 0;
+    (function type() {
+      if (i >= full.length) { term.innerHTML = full + "\n" + caret; return; }
+      if (full[i] === "<") i = full.indexOf(">", i) + 1;
+      else if (full[i] === "&") i = full.indexOf(";", i) + 1;
+      else i++;
+      term.innerHTML = full.slice(0, i) + caret;
+      setTimeout(type, full[i - 1] === "\n" ? 140 : 18);
+    })();
+  }
+
+  /* 연도 흐름 막대 */
+  var track = $("#gantt-track"), axis = $("#gantt-axis"), tip = $("#tip");
+  var minM = Math.min.apply(null, items.map(function (it) { return toM(it.dataset.start); }));
+  var span = nowM + 1 - minM;
+  var pct = function (m) { return ((m - minM) / span * 100) + "%"; };
+  items.forEach(function (it, idx) {
+    var s = toM(it.dataset.start), e = toM(it.dataset.end) + 1;
+    var name = $("h3", it).firstChild.textContent.trim();
+    var label = $(".period", it).textContent.trim() + " · " + name;
+    var b = document.createElement("button");
+    b.className = "seg" + (it.classList.contains("staff") ? " staff" : "");
+    b.style.left = pct(s);
+    b.style.width = "calc(" + ((e - s) / span * 100) + "% - 2px)";
+    b.style.transitionDelay = reduce ? "0s" : (items.length - idx) * 50 + "ms";
+    b.setAttribute("aria-label", label);
+    b.onmouseenter = b.onfocus = function () { tip.textContent = label; };
+    b.onclick = function () {
+      it.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "center" });
+      it.classList.add("flash");
+      setTimeout(function () { it.classList.remove("flash"); }, 1400);
+    };
+    it._seg = b;
+    track.appendChild(b);
+  });
+  var firstY = Math.floor(minM / 12) + 1, lastY = now.getFullYear();
+  for (var y = firstY; y <= lastY; y++) {
+    if ((y - firstY) % 3 && y !== lastY) continue;
+    var t = document.createElement("span");
+    t.style.left = pct(y * 12);
+    t.textContent = y;
+    axis.appendChild(t);
+  }
+  new IntersectionObserver(function (es, o) {
+    if (es[0].isIntersecting) { $("#gantt").classList.add("in"); o.disconnect(); }
+  }, { threshold: 0.3 }).observe($("#gantt"));
+
+  /* 기술 필터 */
+  var btns = $$(".filter");
+  btns.forEach(function (b) {
+    var f = b.dataset.f;
+    var n = f === "all" ? items.length : items.filter(function (it) { return it.dataset.tags.split(" ").indexOf(f) > -1; }).length;
+    b.insertAdjacentHTML("beforeend", "<b>" + n + "</b>");
+    b.onclick = function () {
+      btns.forEach(function (x) { x.classList.toggle("on", x === b); x.setAttribute("aria-pressed", x === b); });
+      items.forEach(function (it) {
+        var hit = f === "all" || it.dataset.tags.split(" ").indexOf(f) > -1;
+        it.hidden = !hit;
+        it._seg.classList.toggle("dim", !hit);
+      });
+      onScroll();
+    };
+  });
+
+  /* 스크롤: 진행 바, 타임라인 채우기, 메뉴 강조 */
+  var bar = $("#progress"), tl = $("#timeline"), fill = $("#tl-fill");
+  var navLinks = $$("nav ul a");
+  var secs = navLinks.map(function (a) { return $(a.getAttribute("href")); });
+  function onScroll() {
+    var h = document.documentElement;
+    bar.style.transform = "scaleX(" + (h.scrollTop / Math.max(1, h.scrollHeight - h.clientHeight)) + ")";
+    var mid = window.innerHeight * 0.6;
+    var r = tl.getBoundingClientRect();
+    fill.style.transform = "scaleY(" + Math.max(0, Math.min(1, (mid - r.top) / r.height)) + ")";
+    items.forEach(function (it) {
+      if (!it.hidden && it.getBoundingClientRect().top < mid) it.classList.add("seen");
+    });
+    var cur = -1;
+    secs.forEach(function (s, i) { if (s.getBoundingClientRect().top < 120) cur = i; });
+    navLinks.forEach(function (a, i) { a.classList.toggle("on", i === cur); });
+  }
+  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", onScroll);
+  onScroll();
+})();
+</script>
 </body>
 </html>

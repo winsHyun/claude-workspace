@@ -24,3 +24,6 @@ desktop.ini
 
 # ===== 방명록: .env.local 에서 생성되는 설정 파일 =====
 config.js
+
+# ===== 개인 작업 메모 =====
+work.txt

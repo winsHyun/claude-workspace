@@ -81,3 +81,13 @@
   - 참고: 헤드리스 Edge는 `#앵커` 주소로 찍으면 검은 화면(기존 페이지도 동일), 390px 요청 시 실제 폭 496px → 임시 복사본에서 다른 섹션 숨기고 폭 고정해 촬영
 - 테스트 글 1건("테스트") DB에 남아 있음 → 대시보드 Table Editor에서 삭제 필요
 - 남은 일: 브라우저에서 폼 직접 제출 테스트(사용자), Vercel 배포 설정(`.vercelignore`, 환경변수, config.js 생성), 커밋
+
+## 2026-10-19 — Vercel 방명록 "config.js를 찾지 못했어요" 해결
+
+- 원인: `config.js`는 `.gitignore`로 GitHub에 없고, `.vercelignore`가 `scripts/`도 막아 Vercel에서 생성 불가
+- 사용자가 Vercel 환경변수 `SUPABASE_URL`, `SUPABASE_ANON_KEY` 등록
+- `.vercelignore`: `scripts/gen-config.mjs`만 추가 허용 (백업 `.vercelignore.bak`)
+- `vercel.json`: `buildCommand` = config.js 생성 → `public/`에 `portfolio.html`, `config.js`만 복사, `outputDirectory: "public"` (백업 `vercel.json.bak`)
+  - 1차(79ce1d3) 실패: 스크립트 exit 1(환경변수 수정 후 해결) → `No Output Directory named "public"` → 2차(a8eebc6)에서 public 출력으로 해결
+- 확인(a8eebc6 배포): `/`·`/config.js` 200, `/SECURITY.md`·`/.env.local`·`/vercel.json`·`/scripts/gen-config.mjs`·`/work.txt` 404, 배포된 config.js role=anon, 방명록 읽기 200(글 2개)
+- 남은 일: `work.txt` 추적 해제(`git rm --cached`) 여부 결정, `.gitignore` 변경 미커밋

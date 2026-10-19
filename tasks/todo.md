@@ -102,9 +102,10 @@
 > 원인: `config.js`는 `.gitignore`로 GitHub에 안 올라가고, `.vercelignore`가 `scripts/`도 막아서 Vercel이 직접 만들 수도 없음
 > 방법: 배포할 때 Vercel이 `node scripts/gen-config.mjs`를 실행해 `config.js`를 만들게 함 (키는 Vercel 환경변수에만 저장)
 
-- [ ] 1. **(사용자)** Vercel 대시보드 → Project → Settings → Environment Variables에 `SUPABASE_URL`, `SUPABASE_ANON_KEY` 등록 (`.env.local`과 같은 값, anon 키만)
-- [ ] 2. `.vercelignore`에 `!scripts/` + `!scripts/gen-config.mjs` 허용 추가 (나머지 파일은 계속 제외) — 백업 `.vercelignore.bak`
-- [ ] 3. `vercel.json`에 `"buildCommand": "node scripts/gen-config.mjs"` 추가 — 백업 `vercel.json.bak`
-- [ ] 4. 커밋 + push (`config.js`, `.env.local`, `work.txt` 미포함 확인)
-- [ ] 5. 배포 후 확인: 사이트 방명록 표시, `/config.js` 열림, `/SECURITY.md`·`/.env.local` 404
-- [ ] 6. `progress.md` 기록
+- [x] 1. **(사용자)** Vercel 대시보드 → Project → Settings → Environment Variables에 `SUPABASE_URL`, `SUPABASE_ANON_KEY` 등록 (`.env.local`과 같은 값, anon 키만)
+- [x] 2. `.vercelignore`에 `!scripts/` + `!scripts/gen-config.mjs` 허용 추가 (나머지 파일은 계속 제외) — 백업 `.vercelignore.bak`
+- [x] 3. `vercel.json`에 `"buildCommand": "node scripts/gen-config.mjs"` 추가 — 백업 `vercel.json.bak`
+  - 1차 배포 실패: 출력 폴더(`public`) 없음 → 빌드 시 `public/`에 `portfolio.html`, `config.js`만 복사 + `outputDirectory: "public"`
+- [x] 4. 커밋 + push (`config.js`, `.env.local`, `work.txt` 미포함 확인)
+- [x] 5. 배포 후 확인: 사이트 방명록 표시, `/config.js` 열림, `/SECURITY.md`·`/.env.local` 404
+- [x] 6. `progress.md` 기록

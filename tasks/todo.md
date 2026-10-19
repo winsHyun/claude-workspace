@@ -85,3 +85,14 @@
 - [x] 5. `README.md` 폴더 구조 다시 정리 (백업: `README.md.bak`)
 - [x] 6. 커밋 "portfolio.html현행화" (이력서 파일 미포함 확인, push는 따로 확인)
 - [x] 7. `progress.md` 기록
+
+## 2026-10-19 — 포트폴리오 방명록 (Supabase)
+
+- [x] 1. `supabase/messages.sql` 작성 — `messages` 테이블(id, name, content, created_at) + 길이 제한 + RLS(누구나 읽기·쓰기, 수정·삭제 불가) + name·content만 입력 허용
+  - anon 키로는 테이블을 만들 수 없음 → **사용자가 Supabase 대시보드 SQL Editor에서 실행**
+- [x] 2. `.env.local` 생성 (SUPABASE_URL, SUPABASE_ANON_KEY) — `.gitignore`의 `.env.*` 규칙으로 이미 제외되는지 `git check-ignore`로 확인
+- [x] 3. `scripts/gen-config.mjs` 작성 — `.env.local`을 읽어 `config.js` 생성 (정적 HTML은 .env를 직접 못 읽기 때문). `config.js`도 `.gitignore`에 추가
+- [x] 4. `portfolio.html` 맨 아래(연락처 다음)에 방명록 섹션 추가 — 작성 폼 + 최신순 목록, 기존 디자인·다크모드 맞춤 (백업: `portfolio.html.20261019.bak` — 기존 `.bak`은 덮어쓰지 않음)
+  - 라이브러리 없이 Supabase REST API를 `fetch`로 호출, 글은 `textContent`로 표시(스크립트 삽입 방지)
+- [x] 5. 로컬 테스트 — `node scripts/gen-config.mjs` → `npx serve` → 글 작성·목록 표시 확인 (SQL 실행 후)
+- [x] 6. `progress.md` 기록 (커밋·Vercel 배포 설정은 따로 확인)

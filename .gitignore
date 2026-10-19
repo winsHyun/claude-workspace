@@ -21,3 +21,6 @@ desktop.ini
 
 # ===== Claude Code 개인 설정 =====
 .claude/settings.local.json
+
+# ===== 방명록: .env.local 에서 생성되는 설정 파일 =====
+config.js

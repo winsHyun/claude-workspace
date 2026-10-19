@@ -69,3 +69,15 @@
   - 데이터: github-contributions-api.jogruber.de (GitHub 공개 기여 기록, 키 불필요) → 페이지 열 때마다 최신 기록
   - 불러오기 실패 시 안내 문구 + GitHub 링크 표시
 - 확인: 1200px·390px 화면에서 달력 표시 확인 (17건, 7일, 최장 4일, 최근 10월 18일)
+
+## 2026-10-19 — 포트폴리오 방명록 (Supabase)
+
+- `supabase/messages.sql`: `messages`(id, name, content, created_at) + 길이 제한(이름 30·메시지 500) + RLS(누구나 읽기·쓰기, 수정·삭제 정책 없음) + 방문자는 `name`, `content` 컬럼만 INSERT 가능 → 사용자가 SQL Editor에서 실행
+- `.env.local`(URL, anon 키) 생성 — 기존 `.gitignore`의 `.env.*` 규칙으로 제외 확인
+- `scripts/gen-config.mjs`: `.env.local` → `config.js` 생성 (anon 키가 아니면 멈춤), `config.js`는 `.gitignore`에 추가
+- `portfolio.html`: 연락처 아래 방명록 섹션(폼 + 최신 50개 목록) + 메뉴 링크, Supabase REST를 `fetch`로 직접 호출, 글은 `textContent`로 표시 (백업: `portfolio.html.20261019.bak`)
+- 확인(REST): 읽기 200, 작성 201, 작성시간 조작 401, 빈 이름 400(check 제약), 수정·삭제 0건(RLS 차단)
+- 확인(Edge 헤드리스): 페이지에 테스트 글 표시, PC 1280px·모바일 390px 스크린샷 정상
+  - 참고: 헤드리스 Edge는 `#앵커` 주소로 찍으면 검은 화면(기존 페이지도 동일), 390px 요청 시 실제 폭 496px → 임시 복사본에서 다른 섹션 숨기고 폭 고정해 촬영
+- 테스트 글 1건("테스트") DB에 남아 있음 → 대시보드 Table Editor에서 삭제 필요
+- 남은 일: 브라우저에서 폼 직접 제출 테스트(사용자), Vercel 배포 설정(`.vercelignore`, 환경변수, config.js 생성), 커밋

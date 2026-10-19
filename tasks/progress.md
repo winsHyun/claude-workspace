@@ -91,3 +91,8 @@
   - 1차(79ce1d3) 실패: 스크립트 exit 1(환경변수 수정 후 해결) → `No Output Directory named "public"` → 2차(a8eebc6)에서 public 출력으로 해결
 - 확인(a8eebc6 배포): `/`·`/config.js` 200, `/SECURITY.md`·`/.env.local`·`/vercel.json`·`/scripts/gen-config.mjs`·`/work.txt` 404, 배포된 config.js role=anon, 방명록 읽기 200(글 2개)
 - 남은 일: `work.txt` 추적 해제(`git rm --cached`) 여부 결정, `.gitignore` 변경 미커밋
+
+## 2026-10-19 — 기술 스택에 Vercel·Supabase 추가
+
+- `portfolio.html` 기술 스택: Database 칸에 `Supabase`, Cloud 칸에 `Vercel` 칩 추가 (백업: `portfolio.html.20261019-2.bak`)
+- 확인: Edge 헤드리스 1200px 스크린샷에서 두 칩 정상 표시

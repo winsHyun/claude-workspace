@@ -2,3 +2,7 @@
 /*
 !portfolio.html
 !vercel.json
+# 방명록: 배포 시 config.js 생성 스크립트만 허용 (scripts/ 안의 다른 파일은 제외)
+!scripts/
+scripts/*
+!scripts/gen-config.mjs

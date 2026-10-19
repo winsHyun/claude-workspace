@@ -1,5 +1,6 @@
 {
-  "buildCommand": "node scripts/gen-config.mjs",
+  "buildCommand": "node scripts/gen-config.mjs && mkdir -p public && cp portfolio.html config.js public/",
+  "outputDirectory": "public",
   "cleanUrls": true,
   "trailingSlash": false,
   "rewrites": [

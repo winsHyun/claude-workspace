@@ -75,7 +75,7 @@ claude-workspace/
 |---|---|
 | 소개 | 총 경력·참여 프로젝트·발주기관 숫자, "지금도 학습 중" 배지 |
 | 기술 | 언어·프레임워크·DB·클라우드·AI 도구 칩 |
-| 📈 성장 | 학습 기간·작업한 날·직접 만든 앱 수, Claude Code 레벨업(Lv.1~6), 날짜별 학습 여정 |
+| 📈 성장 | 직접 만든 앱·함께 일한 AI 에이전트 수·Claude Code 활용 단계, Claude Code 레벨업(Lv.1~6), 날짜별 학습 여정 |
 | 🤖 바이브 코딩 | [VibeCoding](https://github.com/winsHyun/VibeCoding) 저장소의 실습 앱 **7개** 카드 |
 | GitHub | 기여 달력·저장소 통계 |
 | 경력 | 회사·프로젝트 타임라인 |

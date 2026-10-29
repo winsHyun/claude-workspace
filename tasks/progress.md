@@ -96,3 +96,10 @@
 
 - `portfolio.html` 기술 스택: Database 칸에 `Supabase`, Cloud 칸에 `Vercel` 칩 추가 (백업: `portfolio.html.20261019-2.bak`)
 - 확인: Edge 헤드리스 1200px 스크린샷에서 두 칩 정상 표시
+
+## 2026-10-29 — 포트폴리오에 바이브 코딩 프로젝트 추가
+
+- VibeCoding 레포 README 참고, `portfolio.html`에 `#vibe` 섹션 추가: 작업 흐름(아이디어→PRD→Claude Code→QA→개선) + 6개 프로젝트 카드(각 GitHub 폴더 링크)
+- 메뉴에 "바이브 코딩", AI 기술 칩에 OpenRouter·TensorFlow.js 추가
+- 카드 클래스는 `.vibe` 사용 → `.projects li`로 세는 "참여 프로젝트 28건"에 영향 없음
+- 확인: GitHub 폴더 6개 모두 존재, Chrome 헤드리스 1280px 스크린샷 정상

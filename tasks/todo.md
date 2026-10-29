@@ -109,3 +109,13 @@
 - [x] 4. 커밋 + push (`config.js`, `.env.local`, `work.txt` 미포함 확인)
 - [x] 5. 배포 후 확인: 사이트 방명록 표시, `/config.js` 열림, `/SECURITY.md`·`/.env.local` 404
 - [x] 6. `progress.md` 기록
+
+## 2026-10-29 — 포트폴리오에 바이브 코딩 프로젝트 추가
+
+> 참고: https://github.com/winsHyun/VibeCoding README.md
+
+- [x] 1. `portfolio.html`에 "바이브 코딩 프로젝트" 섹션(Study-01~05, 6개 카드) 추가 — 기술 스택 아래
+- [x] 2. 메뉴에 "바이브 코딩" 링크, AI 칩에 `OpenRouter`·`TensorFlow.js` 추가
+- [x] 3. 헤드리스 Chrome 스크린샷으로 확인 (참여 프로젝트 28건 그대로)
+- [x] 4. 커밋 + push → Vercel 자동 배포
+- [x] 5. `progress.md` 기록

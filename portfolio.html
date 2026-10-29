@@ -138,6 +138,44 @@
   }
   .skill .chip { font-size: .85rem; padding: 4px 12px; color: var(--text); }
 
+  /* 소개: 학습 중 배지 */
+  .badges { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+  .badges .badge { margin-bottom: 0; }
+  .badge.learn { background: var(--amber-soft); color: var(--amber); text-decoration: none; }
+  .badge.learn .dot { background: var(--amber); }
+
+  /* 성장 기록 */
+  .grow-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 20px; }
+  .grow { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .grow-card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 22px 24px; }
+  .grow-card > h3 { display: flex; align-items: center; gap: 8px; font-size: 1rem; margin-bottom: 18px; }
+  .grow-card > h3 .oc { color: var(--accent); }
+  .levels { list-style: none; display: grid; gap: 14px; }
+  .lv-top { display: flex; justify-content: space-between; gap: 12px; font-size: .9rem; }
+  .lv-top b { font-family: var(--mono); font-size: .78rem; color: var(--accent); margin-right: 8px; }
+  .lv-top time { color: var(--faint); font-size: .8rem; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .lv-bar { height: 8px; margin-top: 6px; border-radius: 999px; background: var(--surface-2); overflow: hidden; }
+  .lv-bar i {
+    display: block; height: 100%; width: var(--w); border-radius: inherit;
+    background: linear-gradient(90deg, var(--accent), var(--amber));
+    transform: scaleX(0); transform-origin: 0 50%; transition: transform 1s cubic-bezier(.2,.7,.2,1);
+  }
+  .levels.in .lv-bar i { transform: scaleX(1); }
+  .levels li:nth-child(2) i { transition-delay: .12s; }
+  .levels li:nth-child(3) i { transition-delay: .24s; }
+  .levels li:nth-child(4) i { transition-delay: .36s; }
+  .levels li:nth-child(5) i { transition-delay: .48s; }
+  .levels li:nth-child(6) i { transition-delay: .6s; }
+  .lv-note { margin-top: 18px; font-size: .82rem; color: var(--faint); }
+  .journey { list-style: none; position: relative; display: grid; gap: 14px; }
+  .journey::before { content: ""; position: absolute; left: 5px; top: 8px; bottom: 8px; width: 2px; background: linear-gradient(var(--accent), var(--amber)); opacity: .5; }
+  .journey li { position: relative; padding-left: 26px; font-size: .9rem; }
+  .journey li::before { content: ""; position: absolute; left: 0; top: 7px; width: 12px; height: 12px; border-radius: 50%; background: var(--bg); border: 2px solid var(--accent); }
+  .journey time { font-family: var(--mono); font-size: .78rem; color: var(--accent); margin-right: 8px; }
+  .journey span { color: var(--muted); }
+  .journey .now::before { background: var(--amber); border-color: var(--amber); animation: pulse 2s infinite; }
+  .journey .now time { color: var(--amber); }
+
   /* 바이브 코딩 프로젝트 */
   .flow { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 24px; font-size: .88rem; color: var(--muted); }
   .flow span { padding: 4px 12px; border-radius: 999px; background: var(--surface); border: 1px solid var(--line); }
@@ -317,6 +355,7 @@
     .hero .intro { grid-template-columns: 1fr; }
     .stats { grid-template-columns: repeat(2, 1fr); }
     .skills, .certs, .contacts, .vibes { grid-template-columns: 1fr 1fr; }
+    .grow { grid-template-columns: 1fr; }
   }
   @media (max-width: 640px) {
     .wrap { padding: 0 16px; }
@@ -326,6 +365,9 @@
     .term pre { min-height: 0; font-size: .78rem; }
     .stat .num { font-size: 1.6rem; }
     .skills, .certs, .contacts, .vibes { grid-template-columns: 1fr; }
+    .grow-stats { grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+    .grow-stats .stat { padding: 14px; }
+    .grow-card { padding: 18px; }
     .timeline::before, .tl-fill { left: 7px; }
     .tl-item { grid-template-columns: 1fr; gap: 6px; padding-left: 28px; }
     .tl-year { text-align: left; padding-top: 0; }
@@ -338,7 +380,7 @@
     html { scroll-behavior: auto; }
     *, *::before, *::after { animation: none !important; transition: none !important; }
     .js .reveal { opacity: 1; transform: none; }
-    .seg, .gh-grid i { transform: none; }
+    .seg, .gh-grid i, .lv-bar i { transform: none; }
   }
 </style>
 </head>
@@ -352,6 +394,7 @@
     <a class="logo" href="#top"><svg class="oc"><use href="#oc-terminal"/></svg>Hyunjo</a>
     <ul>
       <li><a href="#skills">기술</a></li>
+      <li class="opt"><a href="#growth">성장</a></li>
       <li class="opt"><a href="#vibe">바이브 코딩</a></li>
       <li class="opt"><a href="#github">GitHub</a></li>
       <li><a href="#career">경력</a></li>
@@ -366,7 +409,10 @@
   <header class="hero" id="about">
     <div class="wrap intro">
       <div class="reveal">
-        <div class="badge"><span class="dot"></span>현재 (주)에이콘컴퍼니 · 웹개발자 / PL</div>
+        <div class="badges">
+          <div class="badge"><span class="dot"></span>현재 (주)에이콘컴퍼니 · 웹개발자 / PL</div>
+          <a class="badge learn" href="#growth"><span class="dot"></span>지금도 학습 중 · 2026.10.29 업데이트</a>
+        </div>
         <h1>안녕하세요,<br>웹 개발자 <span>조현</span>입니다.</h1>
         <p>
           2007년부터 공공기관과 연구기관의 웹 시스템을 만들고 운영해 왔습니다.
@@ -423,6 +469,46 @@
         <div class="skill reveal">
           <h3><svg class="oc"><use href="#oc-copilot"/></svg>AI</h3>
           <div class="chips"><span class="chip">ChatGPT</span><span class="chip">OpenAI API</span><span class="chip">GitHub Copilot</span><span class="chip">Claude Code</span><span class="chip">OpenRouter</span><span class="chip">TensorFlow.js</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="growth">
+    <div class="wrap">
+      <h2 class="reveal"><svg class="oc lg"><use href="#oc-graph"/></svg>성장 기록</h2>
+      <p class="lead reveal">18년 차 개발자지만 배움은 멈추지 않습니다. 2026년 10월부터 Claude Code로 AI와 함께 개발하는 법을 꾸준히 익히고, 배운 것을 바로 이 사이트에 적용하고 있어요.</p>
+      <div class="grow-stats">
+        <div class="stat reveal"><svg class="oc lg"><use href="#oc-calendar"/></svg><div class="num"><span data-count="16">16</span><small>일</small></div><div class="label">학습 기간 (10.14~)</div></div>
+        <div class="stat reveal"><svg class="oc lg"><use href="#oc-flame"/></svg><div class="num"><span data-count="10">10</span><small>일</small></div><div class="label">작업을 기록한 날</div></div>
+        <div class="stat reveal"><svg class="oc lg"><use href="#oc-repo"/></svg><div class="num"><span data-count="6">6</span><small>개</small></div><div class="label">직접 만든 앱</div></div>
+      </div>
+      <div class="grow">
+        <div class="grow-card reveal">
+          <h3><svg class="oc"><use href="#oc-copilot"/></svg>Claude Code 레벨업</h3>
+          <ol class="levels reveal">
+            <li><div class="lv-top"><span><b>Lv.1</b>CLAUDE.md로 작업·보안 규칙 정하기</span><time>10.14</time></div><div class="lv-bar"><i style="--w:17%"></i></div></li>
+            <li><div class="lv-top"><span><b>Lv.2</b>Git·GitHub·Vercel 배포 자동화</span><time>10.15</time></div><div class="lv-bar"><i style="--w:33%"></i></div></li>
+            <li><div class="lv-top"><span><b>Lv.3</b>PRD 먼저 쓰고 앱 구현</span><time>10.21</time></div><div class="lv-bar"><i style="--w:50%"></i></div></li>
+            <li><div class="lv-top"><span><b>Lv.4</b>커스텀 슬래시 명령 14개</span><time>10.27</time></div><div class="lv-bar"><i style="--w:67%"></i></div></li>
+            <li><div class="lv-top"><span><b>Lv.5</b>서브 에이전트 3개로 리뷰·최적화</span><time>10.27</time></div><div class="lv-bar"><i style="--w:83%"></i></div></li>
+            <li><div class="lv-top"><span><b>Lv.6</b>에이전트 5개 팀으로 기획~QA</span><time>10.28</time></div><div class="lv-bar"><i style="--w:100%"></i></div></li>
+          </ol>
+          <p class="lv-note">단순한 대화에서 시작해, 역할을 나눈 AI 팀을 운영하는 단계까지 왔어요.</p>
+        </div>
+        <div class="grow-card reveal">
+          <h3><svg class="oc"><use href="#oc-history"/></svg>날짜별 학습 여정</h3>
+          <ol class="journey">
+            <li><time>10.14</time>작업 환경 구축 <span>— 보안 매뉴얼, 날씨 자동 저장 스크립트</span></li>
+            <li><time>10.15</time>GitHub 업로드 <span>— 브랜치로 다크모드 작업, Vercel 배포</span></li>
+            <li><time>10.18</time>포트폴리오 현행화 <span>— GitHub 기여 달력</span></li>
+            <li><time>10.19</time>방명록 <span>— Supabase DB·보안 정책, Vercel 환경변수</span></li>
+            <li><time>10.21</time>Study-01 <span>— TensorFlow.js 손글씨 숫자 인식</span></li>
+            <li><time>10.22</time>Study-02·03 <span>— Todo 앱, 상식 퀴즈 게임</span></li>
+            <li><time>10.27</time>Study-03+·04 <span>— 커스텀 명령, AI 레시피 추천</span></li>
+            <li><time>10.28</time>Study-05 <span>— 공감 AI 다이어리, README 정리</span></li>
+            <li class="now"><time>10.29</time>학습 내용을 포트폴리오에 반영 <span>— 진행 중…</span></li>
+          </ol>
         </div>
       </div>
     </div>

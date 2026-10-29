@@ -133,3 +133,15 @@
 - [x] 3. 메뉴에 "성장" 링크 추가
 - [x] 4. PC·모바일 스크린샷으로 확인
 - [x] 5. 커밋 + push → Vercel 배포 확인 → `progress.md` 기록
+
+## 2026-10-29 — VibeCoding 최신 내용 반영 + README + 배포
+
+- [x] 1. 백업: `portfolio.html.20261029.bak`, `README.md.20261029.bak`
+- [x] 2. `portfolio.html` 바이브 코딩 섹션에 7번째 카드 "📄 PDF 한눈 요약"(Study-05 PDF) 추가
+  - 설명: PDF 업로드 → 한 줄 요약·요점(근거 쪽)·섹션 요약·키워드, rerank로 긴 문서 처리, 워커 스레드 안전 추출
+  - 칩: unpdf · OpenRouter · node --test / 링크: VibeCoding/Study-05
+- [x] 3. 성장 기록 갱신: "직접 만든 앱" 6 → 7, 학습 여정 10.28에 "PDF 한눈 요약 기획(PRD)" 추가, 10.29 항목에 PDF 요약 완성 반영
+- [x] 4. `README.md` 갱신: 포트폴리오 구성(섹션 목록), VibeCoding 링크, Vercel 자동 배포 흐름(push → 배포), 빠진 파일(`scripts/gen-config.mjs`, `supabase/`) 반영
+- [x] 5. Chrome/Edge 헤드리스로 PC·모바일 스크린샷 확인
+- [ ] 6. git commit → git push (→ Vercel 자동 배포) → 배포 주소에서 새 카드 보이는지 확인
+- [ ] 7. `progress.md` 기록

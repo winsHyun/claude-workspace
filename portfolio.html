@@ -438,32 +438,68 @@
     .gh { padding: 18px; }
     .gh-stats { grid-template-columns: 1fr 1fr; row-gap: 14px; }
   }
-  /* ===== 바닥을 돌아다니는 캐릭터들 ===== */
-  #critters { position: fixed; left: 0; right: 0; bottom: env(safe-area-inset-bottom, 0); height: 0; z-index: 15; pointer-events: none; }
-  .critter { position: absolute; left: 0; bottom: 4px; pointer-events: auto; cursor: pointer; will-change: transform; -webkit-tap-highlight-color: transparent; }
-  .critter::after { content: ""; position: absolute; left: 18%; right: 18%; bottom: -3px; height: 6px; border-radius: 50%; background: rgba(10, 10, 10, .1); z-index: -1; transition: transform .3s; }
-  .critter.hop::after { transform: scale(.6); }
-  .critter .flip { transition: transform .25s; }
-  .critter svg { display: block; width: 100%; height: auto; overflow: visible; }
+  /* ===== 화면 전체를 둥둥 떠다니는 캐릭터들 (누르면 반응, 잡아서 끌기·던지기) ===== */
+  #critters { position: fixed; inset: 0; z-index: 15; pointer-events: none; overflow: hidden; }
+  .critter { position: absolute; left: 0; top: 0; pointer-events: none; will-change: transform; user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; }
+  .critter svg > * { pointer-events: auto; cursor: grab; }          /* 캐릭터 몸(그림) 위만 클릭을 받음 */
+  .critter.held svg > * { cursor: grabbing; }
+  .critter .flip { transition: transform .35s; }
+  .critter svg { display: block; width: 100%; height: auto; overflow: visible; filter: drop-shadow(0 6px 8px rgba(10, 10, 10, .12)); transition: filter .2s; }
+  .critter.held svg { filter: drop-shadow(0 16px 14px rgba(10, 10, 10, .2)); }
   .critter svg * { transform-box: fill-box; transform-origin: center; }
-  .critter .bob { animation: c-bob var(--step, .45s) ease-in-out infinite alternate; animation-play-state: paused; }
+  .critter .bob { animation: c-float var(--float, 2.6s) ease-in-out var(--delay, 0s) infinite alternate; }
   .critter .f1, .critter .f2 { animation: c-step var(--step, .45s) ease-in-out infinite alternate; animation-play-state: paused; }
   .critter .f2 { animation-direction: alternate-reverse; }
-  .critter.walk .bob, .critter.walk .f1, .critter.walk .f2 { animation-play-state: running; }
-  .critter.floaty .bob { animation: c-float 2.4s ease-in-out infinite alternate; animation-play-state: running; }
+  .critter.walk .f1, .critter.walk .f2 { animation-play-state: running; }
+  .critter.held .f1, .critter.held .f2 { animation-duration: .12s; }
   .critter .eyes { transition: transform .08s; }
-  .critter.blink .eyes { transform: scaleY(.12); }
+  .critter.blink .eyes, .critter.sleep .eyes { transform: scaleY(.12); }
   .critter .look { transition: transform .2s; }
+  .critter .ck { transition: opacity .3s, transform .3s; }
+  .critter.blush .ck { opacity: 1; transform: scale(1.5); }
+  .critter .leaf { transition: transform .4s cubic-bezier(.3, 1.6, .5, 1); transform-origin: left bottom; }
+  .critter.leafup .leaf { transform: scale(1.9) rotate(-10deg); }
   .critter .led { animation: c-led 1.6s steps(2) infinite; }
-  .critter.hop .jump { animation: c-hop .6s cubic-bezier(.3, 1.6, .5, 1); }
+  .critter.beep .led { animation-duration: .2s; }
+  /* 선택 표시: 빙글 도는 점선 링 + 이름표 */
+  .critter::before { content: ""; position: absolute; inset: -9px; border: 2px dashed var(--accent); border-radius: 50%; opacity: 0; transform: scale(.7); transition: opacity .2s, transform .3s; pointer-events: none; }
+  .critter.sel::before { opacity: 1; transform: scale(1); animation: c-ring 6s linear infinite; }
+  .c-name { position: absolute; left: 50%; top: calc(100% + 10px); transform: translate(-50%, -4px); font: 700 11px/1 system-ui, sans-serif; color: #fff; background: var(--accent-ink);
+    border-radius: 999px; padding: 4px 8px; white-space: nowrap; opacity: 0; transition: opacity .2s, transform .2s; pointer-events: none; }
+  .critter.sel .c-name { opacity: 1; transform: translate(-50%, 0); }
+  /* 반응 움직임 (.jump 에 하나씩) */
+  .critter.r-hop .jump { animation: c-hop .6s cubic-bezier(.3, 1.6, .5, 1); }
+  .critter.r-spin .jump { animation: c-spin .7s ease-in-out; }
+  .critter.r-shake .jump { animation: c-shake .5s linear; }
+  .critter.r-jelly .jump { animation: c-jelly .8s ease-out; }
+  .critter.r-grow .jump { animation: c-grow 1.3s cubic-bezier(.3, 1.6, .5, 1); }
+  .critter.r-dance .jump { animation: c-dance 1.3s ease-in-out; }
+  .critter.r-flip .jump { animation: c-flip .75s ease-in-out; }
+  .critter.r-vanish .jump { animation: c-vanish 1.5s ease-in-out; }
+  .critter.r-punch .jump { animation: c-punch .7s ease-out; }
+  .critter.r-dizzy .jump { animation: c-dizzy 1.4s ease-in-out; }
+  .critter.held .jump { animation: c-wiggle .22s ease-in-out infinite alternate; }
+  .critter.tumble .jump { animation: c-spin .5s linear infinite; }
   .c-pop { position: absolute; left: 50%; bottom: 100%; transform: translateX(-50%); font: 700 13px/1 system-ui, sans-serif; color: var(--text);
     background: #fff; border: 1.5px solid #1d1d1f; border-radius: 10px; padding: 4px 7px; white-space: nowrap; pointer-events: none; animation: c-pop 1.6s ease-out forwards; }
   .c-pop.heart { background: none; border: 0; color: #ff4d7a; font-size: 18px; animation-duration: .9s; }
-  @keyframes c-bob { from { transform: translateY(0) scale(1, 1); } to { transform: translateY(-3px) scale(.97, 1.03); } }
-  @keyframes c-step { from { transform: translateY(0); } to { transform: translateY(-3px); } }
-  @keyframes c-float { from { transform: translateY(-4px); } to { transform: translateY(-12px); } }
+  .c-spark { position: absolute; left: 50%; top: 50%; font: 700 14px/1 system-ui, sans-serif; pointer-events: none; animation: c-burst .8s ease-out forwards; }
+  @keyframes c-float { from { transform: translateY(-4px) rotate(-4deg); } to { transform: translateY(4px) rotate(4deg); } }
+  @keyframes c-step { from { transform: translateY(0) rotate(0); } to { transform: translateY(-3px) rotate(-12deg); } }
   @keyframes c-led { 50% { fill: #ffd23f; } }
-  @keyframes c-hop { 0% { transform: translateY(0) scale(1.1, .9); } 40% { transform: translateY(-34px) scale(.92, 1.08); } 75% { transform: translateY(0) scale(1.12, .88); } 100% { transform: none; } }
+  @keyframes c-ring { from { rotate: 0deg; } to { rotate: 360deg; } }
+  @keyframes c-hop { 0% { transform: translateY(0) scale(1.1, .9); } 40% { transform: translateY(-30px) scale(.92, 1.08) rotate(10deg); } 75% { transform: translateY(0) scale(1.12, .88); } 100% { transform: none; } }
+  @keyframes c-spin { from { transform: rotate(0); } to { transform: rotate(360deg); } }
+  @keyframes c-shake { 0%, 100% { transform: none; } 10%, 30%, 50%, 70%, 90% { transform: translateX(-4px) rotate(-3deg); } 20%, 40%, 60%, 80% { transform: translateX(4px) rotate(3deg); } }
+  @keyframes c-jelly { 0% { transform: scale(1); } 25% { transform: scale(1.25, .75); } 45% { transform: scale(.8, 1.2); } 65% { transform: scale(1.1, .9); } 85% { transform: scale(.96, 1.04); } 100% { transform: scale(1); } }
+  @keyframes c-grow { 0% { transform: scale(1); } 25%, 70% { transform: scale(1.7); } 100% { transform: scale(1); } }
+  @keyframes c-dance { 0%, 100% { transform: none; } 15% { transform: translate(-6px, -6px) rotate(-15deg); } 30% { transform: translate(0, 0) rotate(0); } 45% { transform: translate(6px, -6px) rotate(15deg); } 60% { transform: none; } 75% { transform: translate(-6px, -6px) rotate(-15deg); } 90% { transform: translate(6px, -6px) rotate(15deg); } }
+  @keyframes c-flip { 0% { transform: none; } 50% { transform: translateY(-36px) rotate(-180deg); } 100% { transform: rotate(-360deg); } }
+  @keyframes c-vanish { 0%, 100% { opacity: 1; transform: none; } 30%, 60% { opacity: 0; transform: scale(.4) translateY(-20px); } }
+  @keyframes c-punch { 0%, 100% { transform: none; } 15%, 45% { transform: translateX(calc(var(--d, 1) * 12px)) scale(1.05); } 30%, 60% { transform: translateX(calc(var(--d, 1) * -2px)); } }
+  @keyframes c-dizzy { 0%, 100% { transform: none; } 20% { transform: rotate(-18deg) translateX(-4px); } 40% { transform: rotate(14deg) translateX(4px); } 60% { transform: rotate(-10deg); } 80% { transform: rotate(6deg); } }
+  @keyframes c-wiggle { from { transform: rotate(-9deg) scale(1.05); } to { transform: rotate(9deg) scale(1.05); } }
+  @keyframes c-burst { 0% { opacity: 1; transform: translate(-50%, -50%) scale(.4); } 100% { opacity: 0; transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(1.1) rotate(90deg); } }
   @keyframes c-pop { 0% { opacity: 0; transform: translate(-50%, 6px) scale(.6); } 15% { opacity: 1; transform: translate(-50%, -4px) scale(1); } 80% { opacity: 1; } 100% { opacity: 0; transform: translate(-50%, -14px); } }
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
@@ -1314,7 +1350,7 @@
 })();
 </script>
 <script>
-/* 바닥을 돌아다니는 캐릭터들 — 모양·색·속도가 모두 다른 7종 (직접 그린 SVG) */
+/* 화면 전체를 둥둥 떠다니는 캐릭터들 — 모양·색·속도가 모두 다른 7종 (직접 그린 SVG) */
 (function () {
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
   var S = 'stroke="#1d1d1f" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"';
@@ -1327,7 +1363,7 @@
       }).join("") + '</g></g>';
   }
   function cheeks(x1, x2, y) {
-    return '<ellipse cx="' + x1 + '" cy="' + y + '" rx="3.5" ry="2" fill="#ff8fab" opacity=".55"/><ellipse cx="' + x2 + '" cy="' + y + '" rx="3.5" ry="2" fill="#ff8fab" opacity=".55"/>';
+    return '<ellipse class="ck" cx="' + x1 + '" cy="' + y + '" rx="3.5" ry="2" fill="#ff8fab" opacity=".55"/><ellipse class="ck" cx="' + x2 + '" cy="' + y + '" rx="3.5" ry="2" fill="#ff8fab" opacity=".55"/>';
   }
   function feet(x1, x2, y, fill, rx) {
     rx = rx || 6;
@@ -1339,10 +1375,10 @@
   var KINDS = [
     { name: "새싹 말랑이", size: 60, speed: 26, step: ".42s", says: ["안녕!", "♪", "새싹 자라는 중"],
       svg: feet(24, 40, 59, "#0fa958") + '<g class="bob">' +
-        '<path d="M32 17 C32 11 30 8 27 7" fill="none" ' + S + '/><path d="M32 13 C36 7 42 7 42 7 C41 12 36 14 32 13Z" fill="#0fa958" ' + S + '/>' +
+        '<path d="M32 17 C32 11 30 8 27 7" fill="none" ' + S + '/><path class="leaf" d="M32 13 C36 7 42 7 42 7 C41 12 36 14 32 13Z" fill="#0fa958" ' + S + '/>' +
         '<path d="M10 44 C10 26 20 17 32 17 C44 17 54 26 54 44 C54 54 46 58 32 58 C18 58 10 54 10 44Z" fill="#5fd08f" ' + S + '/>' +
         eyes(26, 38, 38) + cheeks(20, 44, 45) + smile(46) + '</g>' },
-    { name: "꼬마 유령", size: 54, speed: 15, floaty: true, says: ["부우~", "…", "놀랐지?"],
+    { name: "꼬마 유령", size: 54, speed: 15, says: ["부우~", "…", "놀랐지?"],
       svg: '<g class="bob"><path d="M14 56 V32 C14 20 22 12 32 12 C42 12 50 20 50 32 V56 L45 51 L39 56 L32 51 L25 56 L20 51 Z" fill="#f2f6ff" ' + S + '/>' +
         '<path d="M14 36 C8 36 7 30 9 28" fill="none" ' + S + '/><path d="M50 36 C56 36 57 30 55 28" fill="none" ' + S + '/>' +
         eyes(26, 38, 30) + cheeks(21, 43, 37) + '<ellipse cx="32" cy="40" rx="2.5" ry="3" fill="#1d1d1f"/></g>' },
@@ -1379,13 +1415,40 @@
         cheeks(21, 43, 30) + '<ellipse cx="32" cy="47" rx="6" ry="5" fill="#f0dcff" opacity=".8"/></g>' }
   ];
 
+  /* 캐릭터별 전용 반응 */
+  var SPECIAL = {
+    "새싹 말랑이": function (c) { flash(c, "leafup", 1400); say(c, "쑥쑥 자란다!"); },
+    "꼬마 유령": function (c) { anim(c, "r-vanish", 1500); say(c, "뿅!"); },
+    "주황 버섯": function (c) { anim(c, "r-jelly", 800); burst(c, "•", ["#ff6a1a", "#ffb98a", "#fff4e3"], 12); say(c, "포자 퐁퐁"); },
+    "치즈 고양이": function (c) { anim(c, "r-punch", 700); say(c, "냥냥펀치!"); },
+    "파랑 로봇": function (c) { flash(c, "beep", 1600); anim(c, "r-shake", 500); say(c, "삐빅! 분석 완료"); },
+    "반짝 별": function (c) { anim(c, "r-spin", 700); burst(c, "✦", ["#ffd23f", "#ff6a1a", "#3366ff"], 12); say(c, "반짝반짝!"); },
+    "보라 젤리곰": function (c) { anim(c, "r-jelly", 800); say(c, "말랑말랑~"); }
+  };
+  var REACTS = {
+    hop: function (c) { anim(c, "r-hop", 600); say(c, "♥", "heart"); },
+    spin: function (c) { anim(c, "r-spin", 700); say(c, "빙글빙글~"); },
+    shake: function (c) { anim(c, "r-shake", 500); say(c, "부르르"); },
+    jelly: function (c) { anim(c, "r-jelly", 800); say(c, "말랑!"); },
+    grow: function (c) { anim(c, "r-grow", 1300); say(c, "커졌다!"); },
+    dance: function (c) { anim(c, "r-dance", 1300); say(c, "♪ ♫"); },
+    flip: function (c) { anim(c, "r-flip", 750); say(c, "짠!"); },
+    sleep: function (c) { flash(c, "sleep", 2200); say(c, "zzZ"); },
+    blush: function (c) { flash(c, "blush", 2000); say(c, "부끄…"); },
+    sparkle: function (c) { burst(c, "✦", ["#0fa958", "#3366ff", "#ff6a1a", "#ffd23f"], 10); anim(c, "r-hop", 600); },
+    talk: function (c) { anim(c, "r-hop", 600); say(c, pick(c.k.says)); },
+    special: function (c) { SPECIAL[c.k.name](c); }
+  };
+  var REACT_KEYS = Object.keys(REACTS);
+
   var box = document.createElement("div");
   box.id = "critters";
   box.setAttribute("aria-hidden", "true");
   document.body.appendChild(box);
 
   var W = innerWidth, H = innerHeight;
-  var mouse = null;
+  var TOP = 72;                       /* 위쪽 메뉴(nav) 영역은 피해서 떠다님 */
+  var mouse = null, selected = null, drag = null;
   function rnd(a, b) { return a + Math.random() * (b - a); }
   function pick(a) { return a[Math.floor(Math.random() * a.length)]; }
 
@@ -1397,24 +1460,34 @@
   var crs = kinds.map(function (k, i) {
     var el = document.createElement("div");
     var w = k.size * mScale;
-    el.className = "critter" + (k.floaty ? " floaty" : "");
+    el.className = "critter";
     el.style.width = w + "px";
     if (k.step) el.style.setProperty("--step", k.step);
-    el.title = k.name;
-    el.innerHTML = '<div class="jump"><div class="flip"><svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">' + k.svg + "</svg></div></div>";
+    el.style.setProperty("--float", rnd(2.2, 3.4).toFixed(2) + "s");
+    el.style.setProperty("--delay", -rnd(0, 3).toFixed(2) + "s");   /* 서로 다른 박자로 흔들리게 */
+    el.innerHTML = '<div class="jump"><div class="flip"><svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">' + k.svg + "</svg></div></div>" +
+      '<span class="c-name">' + k.name + "</span>";
     box.appendChild(el);
+    var a = rnd(0, Math.PI * 2);
     var c = {
       k: k, el: el, w: w, flip: el.querySelector(".flip"),
       looks: el.querySelectorAll(".look"),
       x: (W - w) * (i + rnd(0.1, 0.9)) / count,
-      dir: Math.random() < 0.5 ? -1 : 1,
-      speed: k.speed * rnd(0.85, 1.15) * mScale,
-      state: "walk", t: rnd(2, 6), blinkT: rnd(1, 4)
+      y: rnd(TOP, Math.max(TOP, H - w - 8)),
+      a: a, dir: Math.cos(a) < 0 ? -1 : 1,
+      speed: k.speed * rnd(1, 1.4) * mScale,
+      vx: 0, vy: 0, vmax: 0,
+      state: "fly", t: rnd(3, 8), blinkT: rnd(1, 4), selT: 0, last: ""
     };
-    el.addEventListener("pointerdown", function () { poke(c); });
+    el.addEventListener("pointerdown", function (e) { grab(c, e); });
+    el.addEventListener("pointermove", function (e) { move(c, e); });
+    el.addEventListener("pointerup", function (e) { release(c, e); });
+    el.addEventListener("pointercancel", function (e) { release(c, e); });
+    el.addEventListener("touchstart", function (e) { e.preventDefault(); }, { passive: false });  /* 터치로 잡을 때 화면 스크롤 막기 */
     return c;
   });
 
+  /* ---- 반응 도우미 ---- */
   function say(c, text, cls) {
     var p = document.createElement("span");
     p.className = "c-pop" + (cls ? " " + cls : "");
@@ -1422,15 +1495,94 @@
     c.el.appendChild(p);
     p.addEventListener("animationend", function () { p.remove(); });
   }
-  function poke(c) {
-    c.el.classList.remove("hop");
-    void c.el.offsetWidth;          /* 연속 클릭에도 다시 점프하도록 애니메이션 재시작 */
-    c.el.classList.add("hop");
-    say(c, "♥", "heart");
-    if (Math.random() < 0.5) setTimeout(function () { say(c, pick(c.k.says)); }, 350);
-    c.state = "idle"; c.t = rnd(1, 2);
+  function anim(c, cls, ms) {          /* .jump 에 움직임 하나 (연속으로 눌러도 처음부터 다시) */
+    c.el.className = c.el.className.replace(/\br-\w+/g, "").trim();
+    void c.el.offsetWidth;
+    c.el.classList.add(cls);
+    clearTimeout(c.animTimer);
+    c.animTimer = setTimeout(function () { c.el.classList.remove(cls); }, ms);
+  }
+  function flash(c, cls, ms) {         /* 잠깐 상태 바꾸기 (잠·부끄·삐빅 등) */
+    c.el.classList.add(cls);
+    setTimeout(function () { c.el.classList.remove(cls); }, ms);
+  }
+  function burst(c, ch, colors, n) {   /* 반짝이 터뜨리기 */
+    for (var i = 0; i < n; i++) {
+      var s = document.createElement("span"), ang = Math.PI * 2 * i / n + rnd(-0.2, 0.2), d = rnd(36, 64);
+      s.className = "c-spark";
+      s.textContent = ch;
+      s.style.color = pick(colors);
+      s.style.setProperty("--dx", (Math.cos(ang) * d).toFixed(1) + "px");
+      s.style.setProperty("--dy", (Math.sin(ang) * d).toFixed(1) + "px");
+      c.el.appendChild(s);
+      s.addEventListener("animationend", function () { this.remove(); });
+    }
+  }
+  function react(c) {                  /* 직전과 다른 반응을 랜덤으로 */
+    var key;
+    do { key = pick(REACT_KEYS); } while (key === c.last);
+    c.last = key;
+    REACTS[key](c);
+  }
+  function select(c) {
+    if (selected && selected !== c) selected.el.classList.remove("sel");
+    selected = c;
+    c.el.classList.add("sel");
+    c.selT = 5;
   }
 
+  /* ---- 잡기 · 끌기 · 놓기(던지기) ---- */
+  function grab(c, e) {
+    if (e.button > 0 || drag) return;
+    e.preventDefault();
+    c.el.setPointerCapture(e.pointerId);
+    drag = { c: c, id: e.pointerId, sx: e.clientX, sy: e.clientY, ox: e.clientX - c.x, oy: e.clientY - c.y, moved: false, hist: [] };
+  }
+  function move(c, e) {
+    if (!drag || drag.c !== c || drag.id !== e.pointerId) return;
+    if (!drag.moved && Math.hypot(e.clientX - drag.sx, e.clientY - drag.sy) > 6) {
+      drag.moved = true;
+      c.state = "held";
+      c.el.classList.add("held");
+      say(c, pick(["으앗!", "내려줘~", "히익", "어디 가?", "슝?"]));
+    }
+    if (!drag.moved) return;
+    c.x = e.clientX - drag.ox;
+    c.y = e.clientY - drag.oy;
+    var now = performance.now();
+    drag.hist.push({ x: e.clientX, y: e.clientY, t: now });
+    while (drag.hist.length > 2 && now - drag.hist[0].t > 100) drag.hist.shift();
+  }
+  function release(c, e) {
+    if (!drag || drag.c !== c || drag.id !== e.pointerId) return;
+    var d = drag;
+    drag = null;
+    c.el.classList.remove("held");
+    if (!d.moved) {                   /* 그냥 누름 = 선택 + 반응 */
+      select(c);
+      react(c);
+      c.state = "idle"; c.t = 5;
+      return;
+    }
+    var h = d.hist, vx = 0, vy = 0;
+    if (h.length > 1 && performance.now() - h[h.length - 1].t < 80) {   /* 멈췄다 놓으면 그냥 내려놓기 */
+      var a = h[0], b = h[h.length - 1], dt = Math.max((b.t - a.t) / 1000, 0.016);
+      vx = (b.x - a.x) / dt; vy = (b.y - a.y) / dt;
+    }
+    var sp = Math.hypot(vx, vy);
+    if (sp > 1600) { vx *= 1600 / sp; vy *= 1600 / sp; sp = 1600; }
+    if (sp > 180) {                    /* 던지기 */
+      c.state = "thrown"; c.vx = vx; c.vy = vy; c.vmax = sp;
+      c.el.classList.add("tumble");
+    } else {
+      c.state = "idle"; c.t = rnd(1, 2);
+      say(c, pick(["휴~", "여기 좋다", "고마워!"]));
+    }
+  }
+  /* 캐릭터 밖을 누르면 선택 해제 */
+  document.addEventListener("pointerdown", function (e) {
+    if (selected && !(e.target.closest && e.target.closest(".critter"))) { selected.el.classList.remove("sel"); selected = null; }
+  }, { passive: true });
   addEventListener("pointermove", function (e) { mouse = e.pointerType === "mouse" ? { x: e.clientX, y: e.clientY } : null; }, { passive: true });
   document.documentElement.addEventListener("pointerleave", function () { mouse = null; });
   addEventListener("resize", function () { W = innerWidth; H = innerHeight; });
@@ -1440,33 +1592,64 @@
     var dt = Math.min((now - last) / 1000, 0.05);
     last = now;
     crs.forEach(function (c) {
-      var cx = c.x + c.w / 2, cy = H - c.w * 0.6;
-      var near = mouse && Math.abs(mouse.x - cx) < 90 && H - mouse.y < 160;
+      var cx = c.x + c.w / 2, cy = c.y + c.w / 2;
+      var near = mouse && Math.hypot(mouse.x - cx, mouse.y - cy) < 110;
+      var maxX = W - c.w - 4, maxY = Math.max(TOP, H - c.w - 8);
 
-      /* 걷기 ↔ 쉬기(두리번·말풍선) 번갈아 — 마우스가 가까우면 멈춰서 쳐다보기 */
-      c.t -= dt;
-      if (near) {
-        if (c.state === "walk") { c.state = "idle"; c.t = rnd(0.8, 1.5); }
-        c.dir = mouse.x < cx ? -1 : 1;
-      } else if (c.t <= 0) {
-        if (c.state === "walk") {
-          c.state = "idle"; c.t = rnd(1.2, 3.5);
-          if (Math.random() < 0.3) say(c, pick(c.k.says));
-        } else {
-          c.state = "walk"; c.t = rnd(3, 8);
-          if (Math.random() < 0.4) c.dir *= -1;
+      if (c.selT > 0 && (c.selT -= dt) <= 0 && selected === c) { c.el.classList.remove("sel"); selected = null; }
+
+      if (c.state === "held") {
+        /* 잡혀 있는 동안은 커서를 따라감 */
+      } else if (c.state === "thrown") {
+        /* 던져진 뒤: 점점 느려지며 날아가고 벽에 튕김 */
+        var f = Math.exp(-2.4 * dt);
+        c.vx *= f; c.vy *= f;
+        c.x += c.vx * dt; c.y += c.vy * dt;
+        if (c.x < 4 || c.x > maxX) { c.vx *= -0.7; }
+        if (c.y < TOP || c.y > maxY) { c.vy *= -0.7; }
+        if (Math.abs(c.vx) > 20) c.dir = c.vx < 0 ? -1 : 1;
+        if (Math.hypot(c.vx, c.vy) < 40) {
+          c.el.classList.remove("tumble");
+          c.state = "idle"; c.t = rnd(1.5, 2.5);
+          c.a = Math.atan2(c.vy, c.vx);
+          if (c.vmax > 900) { anim(c, "r-dizzy", 1400); say(c, "어지러워~ @_@"); }
+          else say(c, pick(["슝~!", "재밌다!", "한 번 더!"]));
+        }
+      } else {
+        /* 떠다니기 ↔ 제자리 둥실(말풍선) 번갈아 — 마우스가 가까우면 멈춰서 쳐다보기 */
+        c.t -= dt;
+        if (near) {
+          if (c.state === "fly") { c.state = "idle"; c.t = rnd(0.8, 1.5); }
+          c.dir = mouse.x < cx ? -1 : 1;
+        } else if (c.t <= 0 && c.selT <= 0) {
+          if (c.state === "fly") {
+            c.state = "idle"; c.t = rnd(1.2, 3);
+            if (Math.random() < 0.3) say(c, pick(c.k.says));
+          } else {
+            c.state = "fly"; c.t = rnd(4, 9);
+            c.a += rnd(-1.2, 1.2);
+          }
+        }
+        if (c.state === "fly") {
+          c.a += rnd(-1.2, 1.2) * dt;              /* 방향을 조금씩 틀며 갈지자로 */
+          var vx = Math.cos(c.a) * c.speed, vy = Math.sin(c.a) * c.speed * 0.7;
+          c.x += vx * dt; c.y += vy * dt;
+          if (Math.abs(vx) > c.speed * 0.25) c.dir = vx < 0 ? -1 : 1;
         }
       }
-      if (c.state === "walk") c.x += c.dir * c.speed * dt;
-      if (c.x < 4) { c.x = 4; c.dir = 1; }
-      if (c.x > W - c.w - 4) { c.x = W - c.w - 4; c.dir = -1; }
-      c.el.classList.toggle("walk", c.state === "walk");
-      c.el.style.transform = "translate3d(" + c.x.toFixed(1) + "px,0,0)";
+      /* 벽에 닿으면 튕기기 (창 크기가 바뀌어도 화면 안으로) */
+      if (c.x < 4) { c.x = 4; c.a = Math.PI - c.a; }
+      if (c.x > maxX) { c.x = maxX; c.a = Math.PI - c.a; }
+      if (c.y < TOP) { c.y = TOP; c.a = -c.a; }
+      if (c.y > maxY) { c.y = maxY; c.a = -c.a; }
+      c.el.classList.toggle("walk", c.state === "fly" || c.state === "held");
+      c.el.style.transform = "translate3d(" + c.x.toFixed(1) + "px," + c.y.toFixed(1) + "px,0)";
       c.flip.style.transform = "scaleX(" + c.dir + ")";
+      c.el.style.setProperty("--d", c.dir);
 
       /* 눈: 마우스 쪽 보기 (없으면 가는 방향), 가끔 깜빡 */
       var lx = 1.6, ly = 0;
-      if (mouse) {
+      if (mouse && c.state !== "held") {
         var dx = mouse.x - cx, dy = mouse.y - cy, d = Math.hypot(dx, dy) || 1;
         lx = dx / d * 2.2 * c.dir; ly = dy / d * 2.2;
       }

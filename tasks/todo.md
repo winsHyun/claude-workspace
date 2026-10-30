@@ -203,4 +203,4 @@
 - [x] 1. 백업: `*.20261030-ch-remove.bak` (portfolio.html, vercel.json, .vercelignore), 이미지 → `img-ch.20261030.bak/`
 - [x] 2. 세 파일을 이미지 추가 직전(4f3ebdc)으로 되돌림, `img/ch` git에서 제거 (원본 `ch/`는 그대로)
 - [x] 3. 로컬 확인: SVG 7마리만, 이미지 0, JS 오류 0건
-- [ ] 4. commit · push → Vercel 배포 확인 → `progress.md` 기록
+- [x] 4. commit · push → Vercel 배포 확인 → `progress.md` 기록

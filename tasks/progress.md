@@ -194,3 +194,10 @@
 - 확인: 로컬 14마리 표시, 이미지 7장 로딩, 7종 클릭 시 선택·반응 정상, JS 오류 0건
 - 백업: `portfolio.html.20261030-ch.bak`, `vercel.json.20261030-ch.bak`, `.vercelignore.20261030-ch.bak`
 - 배포: 5ccaa14 push → Vercel 성공 (claude-workspace-7x4e6ai63-jna5.vercel.app), 이미지 7장 200 응답, 실제 사이트에서 14마리 표시·콘솔 오류 0건 확인
+
+## 2026-10-30 — 이미지 캐릭터 7종 다시 빼기 (SVG 7종만 유지)
+
+- 백업: `portfolio.html.20261030-ch-remove.bak`, `vercel.json.20261030-ch-remove.bak`, `.vercelignore.20261030-ch-remove.bak`, 이미지 7장 → `img-ch.20261030.bak/`
+- `portfolio.html`, `vercel.json`, `.vercelignore` 를 이미지 추가 직전(4f3ebdc)으로 되돌림, `img/ch` 삭제 (원본 `ch/`는 그대로, git 미포함)
+- 확인: 로컬 SVG 7마리·이미지 0·JS 오류 0건
+- 배포: 4a203a1 push → Vercel 성공 (claude-workspace-gf6nit3ek-jna5.vercel.app), 페이지에 img/ch 없음, 이미지 주소 404, SVG 캐릭터만 표시, 콘솔 오류 0건

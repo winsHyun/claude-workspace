@@ -76,13 +76,13 @@ claude-workspace/
 | 소개 | 총 경력·참여 프로젝트·발주기관 숫자, "지금도 학습 중" 배지 |
 | 기술 | 언어·프레임워크·DB·클라우드·AI 도구 칩 |
 | 📈 성장 | 직접 만든 앱·함께 일한 AI 에이전트 수·Claude Code 활용 단계, Claude Code 레벨업(Lv.1~6), 날짜별 학습 여정 |
-| 🤖 바이브 코딩 | [VibeCoding](https://github.com/winsHyun/VibeCoding) 저장소의 실습 앱 **7개** 카드 |
+| 🤖 바이브 코딩 | [VibeCoding](https://github.com/winsHyun/VibeCoding) 저장소의 실습 앱 **8개** 카드 |
 | GitHub | 기여 달력·저장소 통계 |
 | 경력 | 회사·프로젝트 타임라인 |
 | 자격증 · 연락처 | 자격증 목록, 이메일·GitHub |
 | 방명록 | Supabase에 저장되는 응원 메시지 |
 
-**바이브 코딩 프로젝트 7개**
+**바이브 코딩 프로젝트 8개**
 
 | # | 프로젝트 | 핵심 기술 |
 |:-:|---|---|
@@ -93,6 +93,7 @@ claude-workspace/
 | 04 | 🥬 냉장고를 부탁해 | Express · OpenRouter · sharp · 서브 에이전트 3개 |
 | 05 | 📔 공감 AI 다이어리 | Express · OpenRouter · 서브 에이전트 5개 |
 | 05+ | 📄 PDF 한눈 요약 | unpdf · OpenRouter rerank · 워커 스레드 |
+| 06 | 🛒 쇼핑 리스트 | Supabase · Vercel · HTML · CSS · JS |
 
 > ✏️ 새로 학습하면 **배지 날짜, 성장 기록 숫자 3개, 학습 여정 목록, 프로젝트 카드**를 함께 갱신해요.
 

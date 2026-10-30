@@ -184,3 +184,13 @@
 - `README.md`: 바이브 코딩 프로젝트 7→8개, 표에 06 추가
 - 로컬 Edge 헤드리스 스크린샷으로 카드·여정·숫자 확인
 - 배포: 0b781d2 push → Vercel 성공 (claude-workspace-dyncli7dw-jna5.vercel.app), 배포 페이지에서 Study-06·"8"·10.30 확인
+
+## 2026-10-30 — 이미지 캐릭터 7종 추가 (SVG 7종과 함께 14종)
+
+- `ch/*.PNG`(원본 그대로 둠) → 연회색 배경을 지운 복사본을 `img/ch/`에 영어 이름으로 저장 (chiikawa·hachiware·usagi·momonga·kuriman·shisa·kani)
+  - 흰 캐릭터는 몸통 색이 배경과 같은 247이라 테두리 틈으로 지우기가 새어 들어감 → 테두리를 부풀린 벽으로 틈을 막고 바깥에서만 지우기 (치이카와는 틈이 넓어 gap 5, 모몽가는 몸이 사진 끝에 걸쳐 네 모서리에서만 시작)
+- `portfolio.html`: 이미지 캐릭터도 둥둥·선택·반응·끌기·던지기 동일, 캐릭터별 전용 반응·대사, 가로세로 비율을 반영한 화면 경계 계산, 마릿수 PC 14 / 태블릿 8 / 모바일 4
+- 배포 설정: `.vercelignore`에 `!img/`, `vercel.json` 빌드에 `cp -r img public/`
+- 확인: 로컬 14마리 표시, 이미지 7장 로딩, 7종 클릭 시 선택·반응 정상, JS 오류 0건
+- 백업: `portfolio.html.20261030-ch.bak`, `vercel.json.20261030-ch.bak`, `.vercelignore.20261030-ch.bak`
+- 배포: 5ccaa14 push → Vercel 성공 (claude-workspace-7x4e6ai63-jna5.vercel.app), 이미지 7장 200 응답, 실제 사이트에서 14마리 표시·콘솔 오류 0건 확인

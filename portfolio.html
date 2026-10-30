@@ -446,9 +446,6 @@
   .critter .flip { transition: transform .35s; }
   .critter svg { display: block; width: 100%; height: auto; overflow: visible; filter: drop-shadow(0 6px 8px rgba(10, 10, 10, .12)); transition: filter .2s; }
   .critter.held svg { filter: drop-shadow(0 16px 14px rgba(10, 10, 10, .2)); }
-  /* 이미지 캐릭터 (img/ch/*.png) */
-  .critter .pic { display: block; width: 100%; height: auto; pointer-events: auto; cursor: grab; -webkit-user-drag: none; filter: drop-shadow(0 6px 8px rgba(10, 10, 10, .12)); transition: filter .2s; }
-  .critter.held .pic { cursor: grabbing; filter: drop-shadow(0 16px 14px rgba(10, 10, 10, .2)); }
   .critter svg * { transform-box: fill-box; transform-origin: center; }
   .critter .bob { animation: c-float var(--float, 2.6s) ease-in-out var(--delay, 0s) infinite alternate; }
   .critter .f1, .critter .f2 { animation: c-dangle 2.2s ease-in-out infinite alternate; }   /* 물속처럼 발이 천천히 살랑 */
@@ -1363,7 +1360,7 @@
 })();
 </script>
 <script>
-/* 화면 전체를 둥둥 떠다니는 캐릭터들 — 직접 그린 SVG 7종 + 이미지 캐릭터 7종 (img/ch) */
+/* 화면 전체를 둥둥 떠다니는 캐릭터들 — 모양·색·속도가 모두 다른 7종 (직접 그린 SVG) */
 (function () {
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
   var S = 'stroke="#1d1d1f" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"';
@@ -1425,15 +1422,7 @@
         '<ellipse cx="32" cy="46" rx="15" ry="12" fill="#d6a8ff" ' + S + '/>' +
         '<circle cx="32" cy="25" r="14" fill="#d6a8ff" ' + S + '/><ellipse cx="25" cy="18" rx="3.5" ry="2" fill="#fff" opacity=".7"/>' +
         eyes(26.5, 37.5, 24, .8) + '<ellipse cx="32" cy="31" rx="5" ry="3.5" fill="#f0dcff" stroke="#1d1d1f" stroke-width="1.8"/><ellipse cx="32" cy="29.8" rx="1.6" ry="1.1" fill="#1d1d1f"/>' +
-        cheeks(21, 43, 30) + '<ellipse cx="32" cy="47" rx="6" ry="5" fill="#f0dcff" opacity=".8"/></g>' },
-    /* 이미지 캐릭터 — size = 가로 폭, ratio = 세로/가로 */
-    { name: "치이카와", img: "img/ch/chiikawa.png", ratio: 1.14, size: 58, speed: 17, says: ["흐에…", "와아!", "…!"] },
-    { name: "하치와래", img: "img/ch/hachiware.png", ratio: 1.2, size: 56, speed: 24, says: ["어떻게든 될 거야~", "♪", "그거 좋다!"] },
-    { name: "우사기", img: "img/ch/usagi.png", ratio: 1.42, size: 48, speed: 33, says: ["우라!", "야하!", "하아?"] },
-    { name: "모몽가", img: "img/ch/momonga.png", ratio: 0.9, size: 74, speed: 21, says: ["귀엽지?", "나 좀 봐!", "♡"] },
-    { name: "밤만쥬", img: "img/ch/kuriman.png", ratio: 0.75, size: 84, speed: 14, says: ["후~", "한 잔 더…", "좋구먼"] },
-    { name: "시사", img: "img/ch/shisa.png", ratio: 0.87, size: 76, speed: 22, says: ["냠냠", "맛있다~", "사아!"] },
-    { name: "카니", img: "img/ch/kani.png", ratio: 0.97, size: 66, speed: 18, says: ["책 읽는 중…", "쉿", "재밌다!"] }
+        cheeks(21, 43, 30) + '<ellipse cx="32" cy="47" rx="6" ry="5" fill="#f0dcff" opacity=".8"/></g>' }
   ];
 
   /* 캐릭터별 전용 반응 */
@@ -1444,14 +1433,7 @@
     "치즈 고양이": function (c) { anim(c, "r-punch", 700); say(c, "냥냥펀치!"); },
     "파랑 로봇": function (c) { flash(c, "beep", 1600); anim(c, "r-shake", 500); say(c, "삐빅! 분석 완료"); },
     "반짝 별": function (c) { anim(c, "r-spin", 700); burst(c, "✦", ["#ffd23f", "#ff6a1a", "#3366ff"], 12); say(c, "반짝반짝!"); },
-    "보라 젤리곰": function (c) { anim(c, "r-jelly", 800); say(c, "말랑말랑~"); },
-    "치이카와": function (c) { anim(c, "r-shake", 500); say(c, "흐에에…"); },
-    "하치와래": function (c) { anim(c, "r-hop", 600); burst(c, "♪", ["#5a7ff0", "#3366ff", "#a9c1ff"], 8); say(c, "어떻게든 될 거야!"); },
-    "우사기": function (c) { anim(c, "r-flip", 750); say(c, "우라야하!"); },
-    "모몽가": function (c) { anim(c, "r-grow", 1300); burst(c, "♡", ["#ff8fab", "#ff4d7a", "#a9d8f5"], 10); say(c, "더 귀여워해 줘!"); },
-    "밤만쥬": function (c) { anim(c, "r-dizzy", 1400); say(c, "크~ 좋다"); },
-    "시사": function (c) { anim(c, "r-dance", 1300); say(c, "맛있는 거 먹자!"); },
-    "카니": function (c) { anim(c, "r-punch", 700); say(c, "집게 집게!"); }
+    "보라 젤리곰": function (c) { anim(c, "r-jelly", 800); say(c, "말랑말랑~"); }
   };
   var REACTS = {
     hop: function (c) { anim(c, "r-hop", 600); say(c, "♥", "heart"); },
@@ -1481,30 +1463,27 @@
   function pick(a) { return a[Math.floor(Math.random() * a.length)]; }
 
   /* 화면 폭에 따라 마릿수 조절, 순서는 매번 섞기 */
-  var count = W < 640 ? 4 : W < 1000 ? 8 : KINDS.length;
+  var count = W < 640 ? 3 : W < 1000 ? 5 : 7;
   var kinds = KINDS.slice().sort(function () { return Math.random() - 0.5; }).slice(0, count);
   var mScale = W < 640 ? 0.8 : 1;
 
   var crs = kinds.map(function (k, i) {
     var el = document.createElement("div");
-    var w = k.size * mScale, h = w * (k.ratio || 1);
+    var w = k.size * mScale;
     el.className = "critter";
     el.style.width = w + "px";
     if (k.step) el.style.setProperty("--step", k.step);
     el.style.setProperty("--float", rnd(2.2, 3.4).toFixed(2) + "s");
     el.style.setProperty("--delay", -rnd(0, 3).toFixed(2) + "s");   /* 서로 다른 박자로 흔들리게 */
-    var body = k.img
-      ? '<div class="bob"><img class="pic" src="' + k.img + '" alt="" draggable="false"></div>'
-      : '<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">' + k.svg + "</svg>";
-    el.innerHTML = '<div class="jump"><div class="flip">' + body + "</div></div>" +
+    el.innerHTML = '<div class="jump"><div class="flip"><svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">' + k.svg + "</svg></div></div>" +
       '<span class="c-name">' + k.name + "</span>";
     box.appendChild(el);
     var a = rnd(0, Math.PI * 2);
     var c = {
-      k: k, el: el, w: w, h: h, flip: el.querySelector(".flip"),
+      k: k, el: el, w: w, flip: el.querySelector(".flip"),
       looks: el.querySelectorAll(".look"),
       x: (W - w) * (i + rnd(0.1, 0.9)) / count,
-      y: rnd(TOP, Math.max(TOP, H - h - 8)),
+      y: rnd(TOP, Math.max(TOP, H - w - 8)),
       a: a, dir: Math.cos(a) < 0 ? -1 : 1,
       speed: k.speed * rnd(0.8, 1.1) * mScale,
       vx: 0, vy: 0, vmax: 0, turn: 0,
@@ -1626,9 +1605,9 @@
     var dt = Math.min((now - last) / 1000, 0.05);
     last = now;
     crs.forEach(function (c) {
-      var cx = c.x + c.w / 2, cy = c.y + c.h / 2;
+      var cx = c.x + c.w / 2, cy = c.y + c.w / 2;
       var near = mouse && Math.hypot(mouse.x - cx, mouse.y - cy) < 110;
-      var maxX = W - c.w - 4, maxY = Math.max(TOP, H - c.h - 8);
+      var maxX = W - c.w - 4, maxY = Math.max(TOP, H - c.w - 8);
 
       if (c.selT > 0 && (c.selT -= dt) <= 0 && selected === c) { c.el.classList.remove("sel"); selected = null; }
 

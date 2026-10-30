@@ -197,3 +197,10 @@
 - [x] 4. 배포 설정: `.vercelignore` 에 `img/` 허용, `vercel.json` 빌드에 `img/` 복사 추가
 - [x] 5. 로컬 화면 확인 (투명 배경, 움직임, 클릭·드래그, 콘솔 오류 0건)
 - [x] 6. commit · push → Vercel 배포 확인 → `progress.md` 기록
+
+## 2026-10-30 — 이미지 캐릭터 7종 다시 빼기
+
+- [x] 1. 백업: `*.20261030-ch-remove.bak` (portfolio.html, vercel.json, .vercelignore), 이미지 → `img-ch.20261030.bak/`
+- [x] 2. 세 파일을 이미지 추가 직전(4f3ebdc)으로 되돌림, `img/ch` git에서 제거 (원본 `ch/`는 그대로)
+- [x] 3. 로컬 확인: SVG 7마리만, 이미지 0, JS 오류 0건
+- [ ] 4. commit · push → Vercel 배포 확인 → `progress.md` 기록

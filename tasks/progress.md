@@ -176,3 +176,11 @@
 - 확인: 0.1초 간격 위치 기록 — 한 번에 변하는 속도 최대 약 2px(급출발·급정지 없음), 위아래 출렁임 확인, 선택·반응·끌기·던지기(PC·모바일) 정상, 콘솔 오류 0건
 - 백업: portfolio.html.20261029-float.bak
 - 배포: 84874e8 push → Vercel 성공 (claude-workspace-o76yac9dw-jna5.vercel.app), 실제 사이트에서 둥둥 움직임·선택·끌기·던지기·오류 0건 확인
+
+## 2026-10-30 — Study-06 쇼핑 리스트 포트폴리오 반영
+
+- 백업: `portfolio.html.20261030-study06.bak`, `README.md.20261030-study06.bak`
+- `portfolio.html`: Study-06 카드(🛒 쇼핑 리스트 · Supabase · Vercel) 추가, 학습 여정에 10.30 추가, "직접 만든 앱" 7→8, 배지 날짜 2026.10.30
+- `README.md`: 바이브 코딩 프로젝트 7→8개, 표에 06 추가
+- 로컬 Edge 헤드리스 스크린샷으로 카드·여정·숫자 확인
+- 배포: 0b781d2 push → Vercel 성공 (claude-workspace-dyncli7dw-jna5.vercel.app), 배포 페이지에서 Study-06·"8"·10.30 확인

@@ -2,6 +2,8 @@
 /*
 !portfolio.html
 !vercel.json
+# 떠다니는 이미지 캐릭터 (배경 지운 PNG)
+!img/
 # 방명록: 배포 시 config.js 생성 스크립트만 허용 (scripts/ 안의 다른 파일은 제외)
 !scripts/
 scripts/*

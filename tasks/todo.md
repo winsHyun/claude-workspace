@@ -188,3 +188,12 @@
 - [x] 3. README: 바이브 코딩 프로젝트 7→8개, 표에 06 추가
 - [x] 4. 로컬 화면 확인 → commit · push → Vercel 배포 확인
 - [x] 5. `progress.md` 기록
+
+## 2026-10-30 — ch/ 이미지 캐릭터 7종 포트폴리오에 추가 (14종 모두 띄우기)
+
+- [x] 1. 백업: `portfolio.html.20261030-ch.bak`, `vercel.json`/`.vercelignore` 백업
+- [x] 2. 배경 투명화: `ch/*.PNG` 원본은 그대로 두고, 연회색 배경만 지운 복사본을 `img/ch/` 에 영어 이름으로 저장 (chiikawa.png, hachiware.png, usagi.png, momonga.png, kuriman.png, shisa.png, kani.png)
+- [x] 3. `portfolio.html`: 기존 떠다니는 캐릭터(SVG 7종)에 이미지 캐릭터 7종 추가 — 같은 둥둥·선택·반응·끌기·던지기 동작, 이름표는 한글 이름
+- [x] 4. 배포 설정: `.vercelignore` 에 `img/` 허용, `vercel.json` 빌드에 `img/` 복사 추가
+- [x] 5. 로컬 화면 확인 (투명 배경, 움직임, 클릭·드래그, 콘솔 오류 0건)
+- [ ] 6. commit · push → Vercel 배포 확인 → `progress.md` 기록
